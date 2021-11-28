@@ -4,10 +4,10 @@
   "private": true,
   "description": "Проект «Большое путешествие» от HTML Academy",
   "scripts": {
-    "eslint": "eslint src/",
-    "test": "npm run eslint",
     "build": "webpack --mode development",
-    "start": "webpack serve --open --mode development"
+    "eslint": "eslint src/",
+    "start": "webpack serve --open --mode development",
+    "test": "npm run eslint"
   },
   "devDependencies": {
     "@babel/core": "7.16.0",
