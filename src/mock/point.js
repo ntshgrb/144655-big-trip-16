@@ -1,11 +1,5 @@
+import {getRandomInteger} from './../utils.js';
 import dayjs from 'dayjs';
-
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
 
 //Type
 const generatePointType = () => {
@@ -31,36 +25,45 @@ const generateOffers = () => {
     return '';
   }
 
-  const offers = [
+  const OFFERS = [
     {
-      type: 'luggage',
-      title: 'Add luggage',
-      price: 30,
+      type: 'flight',
+      offer: {
+        title: 'Add luggage',
+        price: 30,
+      }
     },
     {
-      type: 'comfort class',
-      title: 'Switch to comfort',
-      price: 100,
+      type: 'taxi',
+      offer: {
+        title: 'Switch to comfort',
+        price: 100,
+      }
     },
     {
-      type: 'meal',
-      title: 'Add meal',
-      price: 15,
+      type: 'ship',
+      offer: {
+        title: 'Add meal',
+        price: 15,
+      }
     },
     {
-      type: 'seats',
-      title: 'Choose seats',
-      price: 5,
+      type: 'bus',
+      offer: {
+        title: 'Choose seats',
+        price: 5,
+      }
     },
     {
       type: 'train',
-      title: 'Travel by train',
-      price: 4,
+      offer: {
+        title: 'Travel by train',
+        price: 4,
+      }
     },
   ];
 
-  const randomOffer = offers[getRandomInteger(0, offers.length - 1)];
-
+  const randomOffer = OFFERS[getRandomInteger(0, OFFERS.length - 1)];
 
   return randomOffer;
 };
@@ -111,14 +114,10 @@ const generatePoint = () => {
     type,
     destination,
     offers: generateOffers(),
-    'point information': [
-      {
-        description: generateDescription(),//строка
-      },
-      {
-        photos: generatePhotos(), //массив
-      }
-    ],
+    information: {
+      description: generateDescription(),
+      photos: generatePhotos(),
+    },
     price: getRandomInteger(10, 600),
     isFavorite: Boolean(getRandomInteger(0, 1)),
     dateFrom,

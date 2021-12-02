@@ -4,13 +4,15 @@ const createOffersListTemplate = (offers) => {
   if (!offers) {
     return '';
   }
-  const {title, price} = offers;
+
+  const {offer} = offers;
+
   return `<h4 class="visually-hidden">Offers:</h4>
   <ul class="event__selected-offers">
     <li class="event__offer">
-      <span class="event__offer-title">${title}</span>
+      <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${price}</span>
+      <span class="event__offer-price">${offer.price}</span>
     </li>
   </ul>`;
 };
@@ -23,6 +25,7 @@ const createTripEventItemTemplate = (point) => {
 
   const startTimeForUser = dayjs(dateFrom).format('h:mm');
   const startTimeForAttribute = dayjs(dateFrom).format('YYYY-MM-DDThh:mm');
+
   const endTimeForUser = dayjs(dateTo).format('h:mm');
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
