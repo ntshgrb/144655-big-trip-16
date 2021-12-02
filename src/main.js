@@ -7,7 +7,10 @@ import {createNewPointTemplate} from './view/new-point-form-view.js';
 import {createPointEditTemplate} from './view/point-edit-view.js';
 import {createTripEventItemTemplate} from './view/trip-event-item';
 
+import {generatePoint} from './mock/point.js';
+
 const TRIP_EVENT_COUNT = 3;
+const POINT_COUNT = 20;
 
 const siteHeaderElement = document.querySelector('.page-header');
 const tripControlsElement = siteHeaderElement.querySelector('.trip-controls__navigation');
@@ -25,6 +28,8 @@ renderTemplate(tripEventsListElement, createPointEditTemplate(), RenderPosition.
 renderTemplate(tripEventsListElement, createNewPointTemplate(), RenderPosition.BEFOREEND);
 
 
+const points = Array.from({length: POINT_COUNT}, generatePoint);
+
 for (let i = 0; i < TRIP_EVENT_COUNT; i++) {
-  renderTemplate(tripEventsListElement, createTripEventItemTemplate(), RenderPosition.BEFOREEND);
+  renderTemplate(tripEventsListElement, createTripEventItemTemplate(points[i]), RenderPosition.BEFOREEND);
 }
