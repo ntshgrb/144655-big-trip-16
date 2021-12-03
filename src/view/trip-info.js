@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../utils";
+import {getRandomInteger} from '../utils';
 
 const createTripInfoTemplate = (points) => {
   const destinationCities = [points[1].destination, points[2].destination, points[3].destination];
@@ -13,7 +13,7 @@ const createTripInfoTemplate = (points) => {
   <p class="trip-info__cost">
     Total: &euro;&nbsp;<span class="trip-info__cost-value">${getRandomInteger(100, 3000)}</span>
   </p>
-</section>`
+</section>`;
 };
 
 export {createTripInfoTemplate};
