@@ -1,4 +1,5 @@
 import {RenderPosition, renderTemplate} from './render.js';
+import {createTripInfoTemplate} from './view/trip-info.js';
 import {createSiteMenuTemplate} from './view/site-menu-view.js';
 import {createFilterTemplate} from './view/filter-view.js';
 import {createTripSortTemplate} from './view/trip-sort-view.js';
@@ -15,11 +16,13 @@ const POINT_COUNT = 20;
 const points = Array.from({length: POINT_COUNT}, generatePoint);
 
 const siteHeaderElement = document.querySelector('.page-header');
+const tripMainElement = siteHeaderElement.querySelector('.trip-main');
 const tripControlsElement = siteHeaderElement.querySelector('.trip-controls__navigation');
 const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
+renderTemplate(tripMainElement, createTripInfoTemplate(points), RenderPosition.AFTERBEGIN);
 renderTemplate(tripControlsElement, createSiteMenuTemplate(), RenderPosition.BEFOREEND);
 renderTemplate(tripFilterElement, createFilterTemplate(), RenderPosition.BEFOREEND);
 renderTemplate(tripEventsElement, createTripSortTemplate(), RenderPosition.BEFOREEND);
