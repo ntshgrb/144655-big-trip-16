@@ -10,9 +10,9 @@ const createOffersListTemplate = (offers) => {
   return `<h4 class="visually-hidden">Offers:</h4>
   <ul class="event__selected-offers">
     <li class="event__offer">
-      <span class="event__offer-title">${offer.title}</span>
+      <span class="event__offer-title">${offer[0].title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offer.price}</span>
+      <span class="event__offer-price">${offer[0].price}</span>
     </li>
   </ul>`;
 };

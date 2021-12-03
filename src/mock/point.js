@@ -28,38 +28,46 @@ const generateOffers = () => {
   const OFFERS = [
     {
       type: 'flight',
-      offer: {
+      offer: [{
         title: 'Add luggage',
         price: 30,
-      }
+      },
+      {
+        title: 'Switch to business',
+        price: 150,
+      }]
     },
     {
       type: 'taxi',
-      offer: {
+      offer: [{
         title: 'Switch to comfort',
         price: 100,
-      }
+      }]
     },
     {
       type: 'ship',
-      offer: {
+      offer: [{
         title: 'Add meal',
         price: 15,
-      }
+      }]
     },
     {
       type: 'bus',
-      offer: {
+      offer: [{
         title: 'Choose seats',
         price: 5,
-      }
+      }]
     },
     {
       type: 'train',
-      offer: {
+      offer: [{
         title: 'Travel by train',
         price: 4,
-      }
+      },
+      {
+        title: 'Rent a movie',
+        price: 5,
+      },]
     },
   ];
 
