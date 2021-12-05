@@ -1,4 +1,4 @@
-import {RenderPosition, renderTemplate, renderElement} from './render.js';
+import {RenderPosition, renderElement} from './render.js';
 import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/filter-view.js';
