@@ -40,10 +40,10 @@ const renderPoint = (pointListElement, point) => {
     document.addEventListener('keydown', onEscKeyDown);
 
     // ???
-    // pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-    //   replaceFormToItem();
-    //   document.removeEventListener('keydown', onEscKeyDown);
-    // });
+    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replaceFormToItem();
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
   });
 
   pointEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
