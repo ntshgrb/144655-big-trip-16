@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {createElement} from '../render.js';
 
 const createEventOffers = (offers) => {
   if (!offers) {
@@ -142,4 +143,26 @@ const createPointEditTemplate = (point) => {
   </li>`;
 };
 
-export {createPointEditTemplate};
+export default class PointEditView {
+  #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+    return this.#element;
+  }
+
+  get template() {
+    return createPointEditTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

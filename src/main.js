@@ -1,12 +1,12 @@
 import {RenderPosition, renderTemplate, renderElement} from './render.js';
-import {createTripInfoTemplate} from './view/trip-info-view.js';
+import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/filter-view.js';
 import TripSortView from './view/trip-sort-view.js';
-import {createTripEventsListElement} from './view/points-list-view.js';
-import {createNewPointTemplate} from './view/new-point-form-view.js';
-import {createPointEditTemplate} from './view/point-edit-view.js';
-import {createTripEventItemTemplate} from './view/point-item-view.js';
+import TripPointsListView from './view/points-list-view.js';
+import NewPointView from './view/new-point-form-view.js';
+import PointEditView from './view/point-edit-view.js';
+import PointItemView from './view/point-item-view.js';
 
 import {generatePoint} from './mock/point.js';
 
@@ -22,17 +22,17 @@ const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filte
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-renderTemplate(tripMainElement, createTripInfoTemplate(points), RenderPosition.AFTERBEGIN);
+renderElement(tripMainElement, new TripInfoView(points).element, RenderPosition.AFTERBEGIN);
 renderElement(tripControlsElement, new SiteMenuView().element, RenderPosition.BEFOREEND);
 renderElement(tripFilterElement, new FilterView().element, RenderPosition.BEFOREEND);
 renderElement(tripEventsElement, new TripSortView().element, RenderPosition.BEFOREEND);
-renderTemplate(tripEventsElement, createTripEventsListElement(), RenderPosition.BEFOREEND);
+renderElement(tripEventsElement, new TripPointsListView().element, RenderPosition.BEFOREEND);
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
-renderTemplate(tripEventsListElement, createPointEditTemplate(points[0]), RenderPosition.BEFOREEND);
-renderTemplate(tripEventsListElement, createNewPointTemplate(), RenderPosition.BEFOREEND);
+renderElement(tripEventsListElement, new PointEditView(points[0]).element, RenderPosition.BEFOREEND);
+renderElement(tripEventsListElement, new NewPointView().element, RenderPosition.BEFOREEND);
 
 for (let i = 1; i < TRIP_EVENT_COUNT; i++) {
-  renderTemplate(tripEventsListElement, createTripEventItemTemplate(points[i]), RenderPosition.BEFOREEND);
+  renderElement(tripEventsListElement, new PointItemView(points[i]).element, RenderPosition.BEFOREEND);
 }
