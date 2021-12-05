@@ -1,12 +1,12 @@
 import {RenderPosition, renderTemplate, renderElement} from './render.js';
-import {createTripInfoTemplate} from './view/trip-info.js';
+import {createTripInfoTemplate} from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/filter-view.js';
 import {createTripSortTemplate} from './view/trip-sort-view.js';
-import {createTripEventsListElement} from './view/trip-events-list-view.js';
+import {createTripEventsListElement} from './view/points-list-view.js';
 import {createNewPointTemplate} from './view/new-point-form-view.js';
 import {createPointEditTemplate} from './view/point-edit-view.js';
-import {createTripEventItemTemplate} from './view/trip-event-item';
+import {createTripEventItemTemplate} from './view/point-item-view.js';
 
 import {generatePoint} from './mock/point.js';
 
