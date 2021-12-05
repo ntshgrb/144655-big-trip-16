@@ -2,7 +2,7 @@ import {RenderPosition, renderTemplate, renderElement} from './render.js';
 import {createTripInfoTemplate} from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/filter-view.js';
-import {createTripSortTemplate} from './view/trip-sort-view.js';
+import TripSortView from './view/trip-sort-view.js';
 import {createTripEventsListElement} from './view/points-list-view.js';
 import {createNewPointTemplate} from './view/new-point-form-view.js';
 import {createPointEditTemplate} from './view/point-edit-view.js';
@@ -25,7 +25,7 @@ const tripEventsElement = siteMainElement.querySelector('.trip-events');
 renderTemplate(tripMainElement, createTripInfoTemplate(points), RenderPosition.AFTERBEGIN);
 renderElement(tripControlsElement, new SiteMenuView().element, RenderPosition.BEFOREEND);
 renderElement(tripFilterElement, new FilterView().element, RenderPosition.BEFOREEND);
-renderTemplate(tripEventsElement, createTripSortTemplate(), RenderPosition.BEFOREEND);
+renderElement(tripEventsElement, new TripSortView().element, RenderPosition.BEFOREEND);
 renderTemplate(tripEventsElement, createTripEventsListElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
