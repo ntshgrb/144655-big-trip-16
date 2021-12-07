@@ -1,3 +1,30 @@
+import {createElement} from '../render.js';
+
+const BLANK_POINT = {
+  type: 'flight',
+  destination: 'Bruxelles',
+  offers:
+  {
+    type: 'flight',
+    offer: [{
+      title: 'Add luggage',
+      price: 30,
+    },
+    {
+      title: 'Switch to business',
+      price: 150,
+    }]
+  },
+  information: {
+    description: 'Cras aliquet varius magna, non porta ligula feugiat eget.',
+    photos: ['http://picsum.photos/248/152?r=2'],
+  },
+  price: 600,
+  //isFavorite = false, ??
+  dateFrom: '03/12/21 00:00',
+  dateTo: '03/12/21 00:00',
+};
+
 const createEventOffers = (offers) => {
   if (!offers) {
     return '';
@@ -34,30 +61,7 @@ const createPhotos = (information) => {
 };
 
 const createNewPointTemplate = (point = {}) => {
-  const {
-    type = 'flight',
-    destination = 'Bruxelles',
-    offers =
-    {
-      type: 'flight',
-      offer: [{
-        title: 'Add luggage',
-        price: 30,
-      },
-      {
-        title: 'Switch to business',
-        price: 150,
-      }]
-    },
-    information = {
-      description: 'Cras aliquet varius magna, non porta ligula feugiat eget.',
-      photos: ['http://picsum.photos/248/152?r=2'],
-    },
-    price = 600,
-    //isFavorite = true, ??
-    dateFrom = '03/12/21 00:00',
-    dateTo = '03/12/21 00:00',
-  } = point;
+  const {type, destination, offers, information, price, dateFrom, dateTo} = point;
 
   const EventOffers = createEventOffers(offers);
 
@@ -171,4 +175,27 @@ const createNewPointTemplate = (point = {}) => {
   </li>`;
 };
 
-export {createNewPointTemplate};
+export default class NewPointView {
+  #element = null;
+  #point = null;
+
+  constructor(point = BLANK_POINT) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createNewPointTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

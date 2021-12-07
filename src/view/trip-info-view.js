@@ -1,4 +1,5 @@
 import {getRandomInteger} from '../utils';
+import {createElement} from '../render.js';
 
 const createTripInfoTemplate = (points) => {
   const destinationCities = [points[1].destination, points[2].destination, points[3].destination];
@@ -16,4 +17,27 @@ const createTripInfoTemplate = (points) => {
 </section>`;
 };
 
-export {createTripInfoTemplate};
+export default class TripInfoView {
+  #element = null;
+  #points = null;
+
+  constructor(points) {
+    this.#points = points;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createTripInfoTemplate(this.#points);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

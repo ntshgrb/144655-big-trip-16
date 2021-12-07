@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {createElement} from '../render.js';
 
 const createOffersListTemplate = (offers) => {
   if (!offers) {
@@ -17,7 +18,7 @@ const createOffersListTemplate = (offers) => {
   </ul>`;
 };
 
-const createTripEventItemTemplate = (point) => {
+const createPointItemTemplate = (point) => {
   const {type, destination, price, isFavorite, dateFrom, dateTo, offers} = point;
 
   const dateForUser = (dayjs(dateFrom).format('MMM D')).toUpperCase();
@@ -69,4 +70,27 @@ const createTripEventItemTemplate = (point) => {
     </li>`;
 };
 
-export {createTripEventItemTemplate};
+export default class PointItemView {
+  #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createPointItemTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
