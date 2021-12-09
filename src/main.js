@@ -7,6 +7,7 @@ import TripPointsListView from './view/points-list-view.js';
 import NewPointView from './view/new-point-form-view.js';
 import PointEditView from './view/point-edit-view.js';
 import PointItemView from './view/point-item-view.js';
+import NoPointsView from './view/no-points-view.js';
 
 import {generatePoint} from './mock/point.js';
 
@@ -62,15 +63,21 @@ const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filte
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-render(tripMainElement, new TripInfoView(points).element, RenderPosition.AFTERBEGIN);
 render(tripControlsElement, new SiteMenuView().element, RenderPosition.BEFOREEND);
 render(tripFilterElement, new FilterView().element, RenderPosition.BEFOREEND);
 render(tripEventsElement, new TripSortView().element, RenderPosition.BEFOREEND);
 
-const pointListComponent =  new TripPointsListView();
-render(tripEventsElement, pointListComponent.element, RenderPosition.BEFOREEND);
-render(pointListComponent.element, new NewPointView().element, RenderPosition.BEFOREEND);
 
-for (let i = 0; i < TRIP_EVENT_COUNT; i++) {
-  renderPoint(pointListComponent.element, points[i]);
+if (points.length === 0) {
+  render(tripEventsElement, new NoPointsView().element, RenderPosition.BEFOREEND);
+} else {
+  render(tripMainElement, new TripInfoView(points).element, RenderPosition.AFTERBEGIN);
+
+  const pointListComponent =  new TripPointsListView();
+  render(tripEventsElement, pointListComponent.element, RenderPosition.BEFOREEND);
+  render(pointListComponent.element, new NewPointView().element, RenderPosition.BEFOREEND);
+
+  for (let i = 0; i < TRIP_EVENT_COUNT; i++) {
+    renderPoint(pointListComponent.element, points[i]);
+  }
 }
