@@ -1,4 +1,4 @@
-import {RenderPosition, render} from './render.js';
+import {RenderPosition, render, replace} from './utils/render.js';
 import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/filter-view.js';
@@ -21,11 +21,11 @@ const renderPoint = (pointListElement, point) => {
   const pointEditComponent = new PointEditView(point);
 
   const replaceItemToForm = () => {
-    pointListElement.replaceChild(pointEditComponent.element, pointComponent.element);
+    replace(pointEditComponent, pointComponent);
   };
 
   const replaceFormToItem =() => {
-    pointListElement.replaceChild(pointComponent.element, pointEditComponent.element);
+    replace(pointComponent, pointEditComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -51,7 +51,7 @@ const renderPoint = (pointListElement, point) => {
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(pointListElement, pointComponent.element, RenderPosition.BEFOREEND);
+  render(pointListElement, pointComponent, RenderPosition.BEFOREEND);
 };
 
 const siteHeaderElement = document.querySelector('.page-header');
@@ -61,19 +61,19 @@ const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filte
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-render(tripControlsElement, new SiteMenuView().element, RenderPosition.BEFOREEND);
-render(tripFilterElement, new FilterView().element, RenderPosition.BEFOREEND);
-render(tripEventsElement, new TripSortView().element, RenderPosition.BEFOREEND);
+render(tripControlsElement, new SiteMenuView(), RenderPosition.BEFOREEND);
+render(tripFilterElement, new FilterView(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new TripSortView(), RenderPosition.BEFOREEND);
 
 
 if (points.length === 0) {
-  render(tripEventsElement, new NoPointsView().element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, new NoPointsView(), RenderPosition.BEFOREEND);
 } else {
-  render(tripMainElement, new TripInfoView(points).element, RenderPosition.AFTERBEGIN);
+  render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
 
   const pointListComponent =  new TripPointsListView();
-  render(tripEventsElement, pointListComponent.element, RenderPosition.BEFOREEND);
-  render(pointListComponent.element, new NewPointView().element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, pointListComponent, RenderPosition.BEFOREEND);
+  render(pointListComponent, new NewPointView(), RenderPosition.BEFOREEND);
 
   for (let i = 0; i < TRIP_EVENT_COUNT; i++) {
     renderPoint(pointListComponent.element, points[i]);

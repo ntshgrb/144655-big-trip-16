@@ -1,4 +1,4 @@
-import {getRandomInteger} from '../utils';
+import {getRandomInteger} from '../utils/common.js';
 import AbstractView from './abstract-view.js';
 
 const createTripInfoTemplate = (points) => {
