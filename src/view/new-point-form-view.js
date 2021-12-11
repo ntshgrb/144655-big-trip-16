@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from './abstract-view.js';
 
 const BLANK_POINT = {
   type: 'flight',
@@ -175,27 +175,15 @@ const createNewPointTemplate = (point = {}) => {
   </li>`;
 };
 
-export default class NewPointView {
-  #element = null;
+export default class NewPointView extends AbstractView {
   #point = null;
 
   constructor(point = BLANK_POINT) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createNewPointTemplate(this.#point);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
