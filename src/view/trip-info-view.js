@@ -1,5 +1,5 @@
-import {getRandomInteger} from '../utils';
-import {createElement} from '../render.js';
+import {getRandomInteger} from '../utils/common.js';
+import AbstractView from './abstract-view.js';
 
 const createTripInfoTemplate = (points) => {
   const destinationCities = [points[1].destination, points[2].destination, points[3].destination];
@@ -17,27 +17,15 @@ const createTripInfoTemplate = (points) => {
 </section>`;
 };
 
-export default class TripInfoView {
-  #element = null;
+export default class TripInfoView extends AbstractView {
   #points = null;
 
   constructor(points) {
+    super();
     this.#points = points;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createTripInfoTemplate(this.#points);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
