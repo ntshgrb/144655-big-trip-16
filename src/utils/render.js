@@ -51,5 +51,18 @@ const replace = (newElement, oldElement) => {
   parent.replaceChild(newChild, oldChild);
 };
 
-export {RenderPosition, render, createElement, replace};
+const remove = (component) => {
+  if (component === null) {
+    return;
+  }
+
+  if (!(component instanceof AbstractView)) {
+    throw new Error('Can remove only components');
+  }
+
+  component.element.remove();
+  component.removeElement();
+};
+
+export {RenderPosition, render, createElement, replace, remove};
 
