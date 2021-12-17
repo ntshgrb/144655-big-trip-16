@@ -2,7 +2,6 @@ import {RenderPosition, render} from './utils/render.js';
 import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/filter-view.js';
-// import NewPointView from './view/new-point-form-view.js';
 
 import TripPresenter from './presenter/trip-presenter.js';
 
