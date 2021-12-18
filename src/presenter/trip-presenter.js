@@ -7,7 +7,6 @@ import PointPresenter from './point-presenter.js';
 import {SortType} from '../const.js';
 import {sortDateDown, sortDurationDown, sortPriceDown} from '../utils/point.js';
 
-const TRIP_EVENT_COUNT = 3;
 
 export default class TripPresenter {
   #tripContainer = null;
@@ -92,7 +91,7 @@ export default class TripPresenter {
   };
 
   #renderPoints = (listContainer, points) => {
-    for (let i = 0; i < TRIP_EVENT_COUNT; i++) {
+    for (let i = 0; i < points.length; i++) {
       this.#renderPoint(listContainer, points[i]);
     }
   }
