@@ -31,7 +31,6 @@ const createPointItemTemplate = (point) => {
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
   const duration = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
-  console.log(duration);
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
