@@ -108,7 +108,7 @@ const generateDate = () => {
 };
 
 const generateDateTo = (initialDate) => {
-  const minuteGap = getRandomInteger(1, 1440);
+  const minuteGap = getRandomInteger(1, 2880);
   return dayjs(initialDate).add(minuteGap, 'minute').toDate();
 };
 

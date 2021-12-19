@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view.js';
 import dayjs from 'dayjs';
+import {time} from '../const.js';
 
 const createOffersListTemplate = (offers) => {
   if (!offers) {
@@ -24,13 +25,26 @@ const createPointItemTemplate = (point) => {
   const dateForUser = (dayjs(dateFrom).format('MMM D')).toUpperCase();
   const dateForattribute = dayjs(dateFrom).format('YYYY-MM-DD');
 
-  const startTimeForUser = dayjs(dateFrom).format('h:mm');
+  const startTimeForUser = dayjs(dateFrom).format('HH:mm');
   const startTimeForAttribute = dayjs(dateFrom).format('YYYY-MM-DDThh:mm');
 
-  const endTimeForUser = dayjs(dateTo).format('h:mm');
+  const endTimeForUser = dayjs(dateTo).format('HH:mm');
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
-  const duration = dayjs(dateTo - dateFrom).format('h:m');
+  const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
+
+  const getDuration = (duration) => {
+    const minutes = Math.floor(duration % 60);
+    const hours = Math.floor(duration / 60 % 24);
+    const days =  Math.floor(duration / 60 / 24);
+
+    if (duration < time.MIN_PER_HOUR) {
+      return minutes < 10 ? `0${minutes}M` : `${minutes}M`;
+    } else if (duration < time.MIN_PER_DAY) {
+      return `${hours}H ${minutes}M`;
+    }
+    return `${days}D ${hours}H ${minutes}M`;
+  };
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
@@ -51,7 +65,7 @@ const createPointItemTemplate = (point) => {
             &mdash;
             <time class="event__end-time" datetime="${endtTimeForAttribute}">${endTimeForUser}</time>
           </p>
-          <p class="event__duration">${duration}M</p>
+          <p class="event__duration">${getDuration(pointDuration)}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${price}</span>

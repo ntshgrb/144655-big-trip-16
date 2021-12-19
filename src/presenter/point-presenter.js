@@ -61,6 +61,11 @@ export default class PointPresenter {
     }
   }
 
+  destroy = () => {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
+  }
+
   #replaceItemToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#onEscKeyDown);
@@ -94,7 +99,6 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick =() => {
-    //мы кликнули по звездочке - вывзвалось это
     this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
   }
 }
