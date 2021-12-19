@@ -31,25 +31,19 @@ const createPointItemTemplate = (point) => {
   const endTimeForUser = dayjs(dateTo).format('HH:mm');
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
-  const timeDifference = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
+  const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
 
-  const convertedTimeDifference = {
-    minutes: Math.floor(timeDifference % 60),
-    hours: Math.floor(timeDifference / 60 % 24),
-    days: Math.floor(timeDifference / 60 / 24),
-  };
+  const getDuration = (duration) => {
+    const minutes = Math.floor(duration % 60);
+    const hours = Math.floor(duration / 60 % 24);
+    const days =  Math.floor(duration / 60 / 24);
 
-  const getDuration = () => {
-    const minutes = convertedTimeDifference.minutes < 10 ? `0${convertedTimeDifference.minutes}M` : `${convertedTimeDifference.minutes}M`;
-    const hours = convertedTimeDifference.hours < 10 ? `0${convertedTimeDifference.hours}H` : `${convertedTimeDifference.hours}H`;
-    const days =  convertedTimeDifference.days < 10 ? `0${convertedTimeDifference.days}D` : `${convertedTimeDifference.days}D`;
-
-    if (timeDifference < time.MIN_PER_HOUR) {
-      return timeDifference < 10 ? `0${timeDifference}` : `${timeDifference}`;
-    } else if (timeDifference < time.MIN_PER_DAY) {
-      return `${hours} ${minutes}`;
+    if (duration < time.MIN_PER_HOUR) {
+      return minutes < 10 ? `0${minutes}M` : `${minutes}M`;
+    } else if (duration < time.MIN_PER_DAY) {
+      return `${hours}H ${minutes}M`;
     }
-    return `${days} ${hours} ${minutes}`;
+    return `${days}D ${hours}H ${minutes}M`;
   };
 
   const favoriteClassName = isFavorite
@@ -71,7 +65,7 @@ const createPointItemTemplate = (point) => {
             &mdash;
             <time class="event__end-time" datetime="${endtTimeForAttribute}">${endTimeForUser}</time>
           </p>
-          <p class="event__duration">${getDuration()}</p>
+          <p class="event__duration">${getDuration(pointDuration)}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${price}</span>
