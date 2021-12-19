@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view.js';
 import dayjs from 'dayjs';
+import {time} from '../const.js';
 
 const createOffersListTemplate = (offers) => {
   if (!offers) {
@@ -24,13 +25,32 @@ const createPointItemTemplate = (point) => {
   const dateForUser = (dayjs(dateFrom).format('MMM D')).toUpperCase();
   const dateForattribute = dayjs(dateFrom).format('YYYY-MM-DD');
 
-  const startTimeForUser = dayjs(dateFrom).format('h:mm');
+  const startTimeForUser = dayjs(dateFrom).format('HH:mm');
   const startTimeForAttribute = dayjs(dateFrom).format('YYYY-MM-DDThh:mm');
 
-  const endTimeForUser = dayjs(dateTo).format('h:mm');
+  const endTimeForUser = dayjs(dateTo).format('HH:mm');
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
-  const duration = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
+  const timeDifference = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
+
+  const convertedTimeDifference = {
+    minutes: Math.floor(timeDifference % 60),
+    hours: Math.floor(timeDifference / 60 % 24),
+    days: Math.floor(timeDifference / 60 / 24),
+  };
+
+  const getDuration = () => {
+    const minutes = convertedTimeDifference.minutes < 10 ? `0${convertedTimeDifference.minutes}M` : `${convertedTimeDifference.minutes}M`;
+    const hours = convertedTimeDifference.hours < 10 ? `0${convertedTimeDifference.hours}H` : `${convertedTimeDifference.hours}H`;
+    const days =  convertedTimeDifference.days < 10 ? `0${convertedTimeDifference.days}D` : `${convertedTimeDifference.days}D`;
+
+    if (timeDifference < time.MIN_PER_HOUR) {
+      return timeDifference < 10 ? `0${timeDifference}` : `${timeDifference}`;
+    } else if (timeDifference < time.MIN_PER_DAY) {
+      return `${hours} ${minutes}`;
+    }
+    return `${days} ${hours} ${minutes}`;
+  };
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
@@ -51,7 +71,7 @@ const createPointItemTemplate = (point) => {
             &mdash;
             <time class="event__end-time" datetime="${endtTimeForAttribute}">${endTimeForUser}</time>
           </p>
-          <p class="event__duration">${duration}M</p>
+          <p class="event__duration">${getDuration()}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${price}</span>

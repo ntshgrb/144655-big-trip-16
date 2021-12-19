@@ -4,4 +4,9 @@ const SortType = {
   PRICE_DOWN: 'price-down',
 };
 
-export {SortType};
+const time = {
+  MIN_PER_HOUR: 60,
+  MIN_PER_DAY: 1440,
+};
+
+export {SortType, time};
