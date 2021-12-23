@@ -63,9 +63,9 @@ const createPhotos = (information) => {
 const createNewPointTemplate = (point = {}) => {
   const {type, destination, offers, information, price, dateFrom, dateTo} = point;
 
-  const EventOffers = createEventOffers(offers);
+  const eventOffers = createEventOffers(offers);
 
-  const EventPhotos = createPhotos(information);
+  const eventPhotos = createPhotos(information);
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -162,13 +162,13 @@ const createNewPointTemplate = (point = {}) => {
       </header>
       <section class="event__details">
         <section class="event__section  event__section--offers">
-          ${EventOffers}
+          ${eventOffers}
         </section>
 
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${information.description}</p>
-         ${EventPhotos}
+         ${eventPhotos}
         </section>
       </section>
     </form>

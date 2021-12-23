@@ -31,16 +31,16 @@ const createPointItemTemplate = (point) => {
   const endTimeForUser = dayjs(dateTo).format('HH:mm');
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
-  const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
+  const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'm'); //вынести фн
 
-  const getDuration = (duration) => {
+  const getDuration = (duration) => { //render duration
     const minutes = Math.floor(duration % 60);
     const hours = Math.floor(duration / 60 % 24);
     const days =  Math.floor(duration / 60 / 24);
 
-    if (duration < time.MIN_PER_HOUR) {
+    if (duration < time.MIN_PER_HOUR) { //вычисление дельты в фн и вычислять когда нужно -- сортировка запись в переменной
       return minutes < 10 ? `0${minutes}M` : `${minutes}M`;
-    } else if (duration < time.MIN_PER_DAY) {
+    } if (duration < time.MIN_PER_DAY) {
       return `${hours}H ${minutes}M`;
     }
     return `${days}D ${hours}H ${minutes}M`;
@@ -51,37 +51,36 @@ const createPointItemTemplate = (point) => {
     : '';
 
   const offersList = createOffersListTemplate(offers);
-
   return  `<li class="trip-events__item">
-      <div class="event">
-        <time class="event__date" datetime="${dateForattribute}">${dateForUser}</time>
-        <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
-        </div>
-        <h3 class="event__title">${type} ${destination}</h3>
-        <div class="event__schedule">
-          <p class="event__time">
-            <time class="event__start-time" datetime="${startTimeForAttribute}">${startTimeForUser}</time>
-            &mdash;
-            <time class="event__end-time" datetime="${endtTimeForAttribute}">${endTimeForUser}</time>
-          </p>
-          <p class="event__duration">${getDuration(pointDuration)}</p>
-        </div>
-        <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${price}</span>
-        </p>
-        ${offersList}
-        <button class="event__favorite-btn ${favoriteClassName}" type="button">
-          <span class="visually-hidden">Add to favorite</span>
-          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-          </svg>
-        </button>
-        <button class="event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
-      </div>
-    </li>`;
+            <div class="event">
+              <time class="event__date" datetime="${dateForattribute}">${dateForUser}</time>
+              <div class="event__type">
+                <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
+              </div>
+              <h3 class="event__title">${type} ${destination}</h3>
+              <div class="event__schedule">
+                <p class="event__time">
+                  <time class="event__start-time" datetime="${startTimeForAttribute}">${startTimeForUser}</time>
+                  &mdash;
+                  <time class="event__end-time" datetime="${endtTimeForAttribute}">${endTimeForUser}</time>
+                </p>
+                <p class="event__duration">${getDuration(pointDuration)}</p>
+              </div>
+              <p class="event__price">
+                &euro;&nbsp;<span class="event__price-value">${price}</span>
+              </p>
+              ${offersList}
+              <button class="event__favorite-btn ${favoriteClassName}" type="button">
+                <span class="visually-hidden">Add to favorite</span>
+                <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+                  <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+                </svg>
+              </button>
+              <button class="event__rollup-btn" type="button">
+                <span class="visually-hidden">Open event</span>
+              </button>
+            </div>
+          </li>`;
 };
 
 export default class PointItemView extends AbstractView {
