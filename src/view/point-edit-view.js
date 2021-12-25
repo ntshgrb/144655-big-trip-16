@@ -3,6 +3,14 @@ import {OFFERS, DESTINATIONS} from '../const.js';
 import SmartView from './smart-view.js';
 import {generateDescription, generatePhotos} from '../mock/point.js';
 
+const createAvailableCitiesList = () => {
+  const dataList = DESTINATIONS.map((city) => (
+    `<option value="${city}"></option>`
+  ));
+
+  return dataList.join('');
+};
+
 const createEventOffers = ({offer}) => {
   if (!offer) {
     return '';
@@ -24,15 +32,7 @@ const createEventOffers = ({offer}) => {
   return availableOffers.join('');
 };
 
-const createDataList = () => {
-  const dataList = DESTINATIONS.map((city) => (
-    `<option value="${city}"></option>`
-  ));
-
-  return dataList.join('');
-};
-
-const createEventDetails = (information) => {
+const createEventDestination = (information) => {
   if (!information) {
     return '';
   }
@@ -42,10 +42,20 @@ const createEventDetails = (information) => {
             ${information.description ? `<p class="event__destination-description">${information.description}.</p>` : ''}
             ${information.photos ?  `<div class="event__photos-container">
                                       <div class="event__photos-tape">
-                                        <img class="event__photo" src="${information.photos}" alt="Event photo">
+                                        ${information.photos.map((photo) => (`<img class="event__photo" src="${photo}" alt="Event photo">`))}
                                       </div>
                                     </div>` : ''}
           </section>`;
+};
+
+const createEventDetails = (offers, information) => {
+  if (!offers && !information) {
+    return '';
+  }
+  return (`<section class="event__details">
+            ${createEventOffers(offers)}
+            ${createEventDestination(information)}
+          </section>`);
 };
 
 const createPointEditTemplate = (data) => {
@@ -54,8 +64,6 @@ const createPointEditTemplate = (data) => {
 
   const eventStartTime = dayjs(dateFrom).format('DD/MM/YY hh:mm');
   const eventEndTime = dayjs(dateTo).format('DD/MM/YY hh:mm');
-
-  const eventOffers = createEventOffers(offers);
 
   return `<li class="trip-events__item">
             <form class="event event--edit" action="#" method="post">
@@ -125,7 +133,7 @@ const createPointEditTemplate = (data) => {
                   </label>
                   <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
                   <datalist id="destination-list-1">
-                    ${createDataList()}
+                    ${createAvailableCitiesList()}
                   </datalist>
                 </div>
 
@@ -151,10 +159,7 @@ const createPointEditTemplate = (data) => {
                   <span class="visually-hidden">Open event</span>
                 </button>
               </header>
-              <section class="event__details">
-                ${eventOffers}
-                ${createEventDetails(information)}
-              </section>
+              ${createEventDetails(offers, information)}
             </form>
           </li>`;
 };
@@ -188,7 +193,7 @@ export default class PointEditView extends SmartView {
 
   #submitFormHandler = (evt) => {
     evt.preventDefault();
-    this._callback.submitForm(PointEditView.parseDataToPoint(this._data));
+    this._callback.submitForm(this._data);
   }
 
   #setInnerHandlers = () => {
@@ -197,9 +202,7 @@ export default class PointEditView extends SmartView {
   }
 
   reset = (point) => {
-    this.updateData(
-      PointEditView.parsePointToData(point)
-    );
+    this.updateData(point);
   }
 
   restoreHandlers = () => {
@@ -224,10 +227,4 @@ export default class PointEditView extends SmartView {
       }
     });
   }
-
-  //one fn for both? naming
-
-  static parsePointToData = (point) => ({...point});
-
-  static parseDataToPoint = (data) => ({...data});
 }

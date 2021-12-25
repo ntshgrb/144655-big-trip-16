@@ -20,7 +20,7 @@ const BLANK_POINT = {
     photos: ['http://picsum.photos/248/152?r=2'],
   },
   price: 600,
-  //isFavorite = false, ??
+  isFavorite: false,
   dateFrom: '03/12/21 00:00',
   dateTo: '03/12/21 00:00',
 };
