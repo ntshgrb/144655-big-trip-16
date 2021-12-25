@@ -1,6 +1,7 @@
 import AbstractView from './abstract-view.js';
 import dayjs from 'dayjs';
 import {time} from '../const.js';
+import {getDelta} from '../utils/point.js';
 
 const createOffersListTemplate = (offers) => {
   if (!offers) {
@@ -31,14 +32,14 @@ const createPointItemTemplate = (point) => {
   const endTimeForUser = dayjs(dateTo).format('HH:mm');
   const endtTimeForAttribute = dayjs(dateTo).format('YYYY-MM-DDThh:mm');
 
-  const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'm'); //вынести фн
+  const pointDuration = getDelta(dateTo, dateFrom);
 
-  const getDuration = (duration) => { //render duration
+  const renderDuration = (duration) => {
     const minutes = Math.floor(duration % 60);
     const hours = Math.floor(duration / 60 % 24);
     const days =  Math.floor(duration / 60 / 24);
 
-    if (duration < time.MIN_PER_HOUR) { //вычисление дельты в фн и вычислять когда нужно -- сортировка запись в переменной
+    if (duration < time.MIN_PER_HOUR) {
       return minutes < 10 ? `0${minutes}M` : `${minutes}M`;
     } if (duration < time.MIN_PER_DAY) {
       return `${hours}H ${minutes}M`;
@@ -64,7 +65,7 @@ const createPointItemTemplate = (point) => {
                   &mdash;
                   <time class="event__end-time" datetime="${endtTimeForAttribute}">${endTimeForUser}</time>
                 </p>
-                <p class="event__duration">${getDuration(pointDuration)}</p>
+                <p class="event__duration">${renderDuration(pointDuration)}</p>
               </div>
               <p class="event__price">
                 &euro;&nbsp;<span class="event__price-value">${price}</span>
