@@ -1,6 +1,7 @@
 import {getRandomInteger} from './../utils/common.js';
 import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
+import {OFFERS, DESTINATIONS} from '../const.js';
 
 //Type
 const generatePointType = () => {
@@ -12,10 +13,8 @@ const generatePointType = () => {
 
 //Destination
 const generateDestination = () => {
-  const destinations = ['Amsterdam', 'Berlin', 'Bruxelles', 'Nantes'];
-
-  const randomIndex = getRandomInteger(0, destinations.length - 1);
-  return destinations[randomIndex];
+  const randomIndex = getRandomInteger(0, DESTINATIONS.length - 1);
+  return DESTINATIONS[randomIndex];
 };
 
 //Offers
@@ -25,52 +24,6 @@ const generateOffers = () => {
   if (!randomIndex) {
     return '';
   }
-
-  const OFFERS = [
-    {
-      type: 'flight',
-      offer: [{
-        title: 'Add luggage',
-        price: 30,
-      },
-      {
-        title: 'Switch to business',
-        price: 150,
-      }]
-    },
-    {
-      type: 'taxi',
-      offer: [{
-        title: 'Switch to comfort',
-        price: 100,
-      }]
-    },
-    {
-      type: 'ship',
-      offer: [{
-        title: 'Add meal',
-        price: 15,
-      }]
-    },
-    {
-      type: 'bus',
-      offer: [{
-        title: 'Choose seats',
-        price: 5,
-      }]
-    },
-    {
-      type: 'train',
-      offer: [{
-        title: 'Travel by train',
-        price: 4,
-      },
-      {
-        title: 'Rent a movie',
-        price: 5,
-      },]
-    },
-  ];
 
   const randomOffer = OFFERS[getRandomInteger(0, OFFERS.length - 1)];
 
@@ -135,4 +88,4 @@ const generatePoint = () => {
   };
 };
 
-export {generatePoint};
+export {generatePoint, generateDescription, generatePhotos};
