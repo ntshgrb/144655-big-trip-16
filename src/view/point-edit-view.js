@@ -167,15 +167,26 @@ const createPointEditTemplate = (data) => {
 };
 
 export default class PointEditView extends SmartView {
+  #datepicker = new Map();
+
   constructor(point) {
     super();
     this._data = point;
 
     this.#setInnerHandlers();
+    this.#setDatepicker();
   }
 
   get template() {
     return createPointEditTemplate(this._data);
+  }
+
+  removeElement = () => {
+    super.removeElement();
+
+    if (this.#datepicker){
+      this.#datepicker.clear();
+    }
   }
 
   setClickCloseEditHandler = (callback) => {
@@ -198,6 +209,31 @@ export default class PointEditView extends SmartView {
     this._callback.submitForm(this._data);
   }
 
+  #setDatepicker = () => {
+    this.#datepicker.set('dateFrom', flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.dateFrom,
+        onChange: this.#dateFromChangeHandler,
+      }
+    ));
+    this.#datepicker.set('dateTo', flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.dateTo,
+        onChange: this.#dateToChangeHandler,
+      }
+    ));
+  }
+
   #setInnerHandlers = () => {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
@@ -211,6 +247,7 @@ export default class PointEditView extends SmartView {
     this.#setInnerHandlers();
     this.setSubmitFormHandler(this._callback.submitForm );
     this.setClickCloseEditHandler(this._callback.closeEditForm);
+    this.#setDatepicker();
   }
 
   #eventTypeChangeHandler = (evt) => {
@@ -227,6 +264,18 @@ export default class PointEditView extends SmartView {
         description: generateDescription(),
         photos: generatePhotos(),
       }
+    });
+  }
+
+  #dateFromChangeHandler = ([userDate]) => {
+    this.updateData({
+      dateFrom: userDate,
+    });
+  }
+
+  #dateToChangeHandler = ([userDate]) => {
+    this.updateData({
+      dateTo: userDate,
     });
   }
 }
