@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import {OFFERS, DESTINATIONS} from '../const.js';
 import SmartView from './smart-view.js';
 import {generateDescription, generatePhotos} from '../mock/point.js';
