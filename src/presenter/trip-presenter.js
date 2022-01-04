@@ -2,7 +2,6 @@ import TripSortView from '../view/trip-sort-view.js';
 import TripPointsListView from '../view/points-list-view.js';
 import NoPointsView from '../view/no-points-view.js';
 import {render, RenderPosition} from '../utils/render.js';
-import {updateItem} from '../utils/common.js';
 import PointPresenter from './point-presenter.js';
 import {SortType} from '../const.js';
 import {sortDateDown, sortDurationDown, sortPriceDown} from '../utils/point.js';
@@ -10,24 +9,26 @@ import {sortDateDown, sortDurationDown, sortPriceDown} from '../utils/point.js';
 
 export default class TripPresenter {
   #tripContainer = null;
+  #pointsModel = null;
 
   #sortComponent = new TripSortView();
   #noPointsComponent = new NoPointsView();
   #tripPointsListComponent = new TripPointsListView();
 
-  #tripPoints = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
 
-  constructor(tripContainer) {
+  constructor(tripContainer, pointsModel) {
     this.#tripContainer = tripContainer;
+    this.#pointsModel = pointsModel;
   }
 
-  init = (tripPoints) => {
-    this.#tripPoints = [...tripPoints].sort(sortDateDown);
+  get points() {
+    return this.#pointsModel;
+  }
 
-
-    if (this.#tripPoints.length === 0) {
+  init = () => {
+    if (this.points.length === 0) {
       this.#renderNoPoints();
     } else {
       this.#renderSort();
@@ -38,13 +39,13 @@ export default class TripPresenter {
   #sortPoints = (sortType) => {
     switch (sortType) {
       case SortType.DURATION_DOWN:
-        this.#tripPoints.sort(sortDurationDown);
+        this.points.sort(sortDurationDown);
         break;
       case SortType.PRICE_DOWN:
-        this.#tripPoints.sort(sortPriceDown);
+        this.poinrs.sort(sortPriceDown);
         break;
       default:
-        this.#tripPoints.sort(sortDateDown);
+        this.points.sort(sortDateDown);
     }
 
     this.#currentSortType = sortType;
@@ -71,7 +72,7 @@ export default class TripPresenter {
 
   #renderPointsList = () => {
     render(this.#tripContainer, this.#tripPointsListComponent, RenderPosition.BEFOREEND);
-    this.#renderPoints(this.#tripPointsListComponent, this.#tripPoints);
+    this.#renderPoints(this.#tripPointsListComponent, this.points);
   }
 
   #clearPointsList = () => {
@@ -80,7 +81,6 @@ export default class TripPresenter {
   }
 
   #handlePointChange = (updatedPoint) => {
-    this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   }
 
