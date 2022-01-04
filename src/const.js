@@ -89,4 +89,16 @@ const OFFERS = [
 
 const DESTINATIONS = ['Amsterdam', 'Berlin', 'Bruxelles', 'Nantes'];
 
-export {SortType, time, OFFERS, DESTINATIONS};
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past'
+};
+
+export {SortType, time, OFFERS, DESTINATIONS, UpdateType, FilterType};
