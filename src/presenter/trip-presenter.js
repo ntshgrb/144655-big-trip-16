@@ -144,10 +144,6 @@ export default class TripPresenter {
     }
   }
 
-  //?? #handlePointChange = (updatedPoint) => {
-  //   this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
-  // }
-
   #renderPoint = (listContainer, point) => {
     const pointPresenter = new PointPresenter(listContainer, this.#handleViewAction, this.#handleModeChange);
     pointPresenter.init(point);

@@ -141,7 +141,7 @@ const createPointEditTemplate = (data) => {
                     <span class="visually-hidden">Price</span>
                     &euro;
                   </label>
-                  <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+                  <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}">
                 </div>
 
                 <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -259,16 +259,38 @@ export default class PointEditView extends SmartView {
   }
 
   #destinationChangeHandler = (evt) => {
-    this.updateData({
-      destination: evt.target.value,
-      information: {
-        description: generateDescription(),
-        photos: generatePhotos(),
+    const destinationInputElement = this.element.querySelector('#event-destination-1');
+    const destinationsListElement = this.element.querySelector('#destination-list-1');
+    let optionFound = false;
+
+    for (let i = 0; i < destinationsListElement.options.length; i++) {
+      if (destinationInputElement.value === destinationsListElement.options[i].value) {
+        optionFound = true;
+        break;
       }
-    });
+    }
+
+    if (optionFound) {
+      this.updateData({
+        destination: evt.target.value,
+        information: {
+          description: generateDescription(),
+          photos: generatePhotos(),
+        }
+      });
+    } else {
+      destinationInputElement.setCustomValidity('Choose a destination from the list');
+      destinationInputElement.reportValidity();
+    }
   }
 
   #priceChangeHandler = (evt) => {
+    if (!(Number.isInteger(+ evt.target.value))) {
+      evt.target.setCustomValidity('Value must be an integer');
+      evt.target.reportValidity();
+      return;
+    }
+
     this.updateData({
       price: evt.target.value
     });
