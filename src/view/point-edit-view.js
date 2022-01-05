@@ -5,6 +5,31 @@ import {OFFERS, DESTINATIONS, eventsTypes} from '../const.js';
 import SmartView from './smart-view.js';
 import {generateDescription, generatePhotos} from '../mock/point.js';
 
+const BLANK_POINT = {
+  type: 'flight',
+  destination: 'Bruxelles',
+  offers:
+  {
+    type: 'flight',
+    offer: [{
+      title: 'Add luggage',
+      price: 30,
+    },
+    {
+      title: 'Switch to business',
+      price: 150,
+    }]
+  },
+  information: {
+    description: 'Cras aliquet varius magna, non porta ligula feugiat eget.',
+    photos: ['http://picsum.photos/248/152?r=2'],
+  },
+  price: 600,
+  isFavorite: false,
+  dateFrom: '03/12/21 00:00',
+  dateTo: '03/12/21 00:00',
+};
+
 const createAvailableCitiesList = () => {
   const dataList = DESTINATIONS.map((city) => (
     `<option value="${city}"></option>`
@@ -133,7 +158,7 @@ const createPointEditTemplate = (data) => {
 export default class PointEditView extends SmartView {
   #datepicker = new Map();
 
-  constructor(point) {
+  constructor(point = BLANK_POINT) {
     super();
     this._data = point;
 

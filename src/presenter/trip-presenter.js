@@ -3,6 +3,7 @@ import TripPointsListView from '../view/points-list-view.js';
 import NoPointsView from '../view/no-points-view.js';
 import {remove, render, RenderPosition} from '../utils/render.js';
 import PointPresenter from './point-presenter.js';
+import PointNewPresenter from './point-new-presenter.js';
 import {SortType, UpdateType, FilterType, UserAction} from '../const.js';
 import {sortDateDown, sortDurationDown, sortPriceDown} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
@@ -18,6 +19,7 @@ export default class TripPresenter {
   #tripPointsListComponent = new TripPointsListView();
 
   #pointPresenter = new Map();
+  #pointNewPresenter = null;
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.EVERYTHING;
 
@@ -25,6 +27,8 @@ export default class TripPresenter {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripPointsListComponent, this.#handleViewAction);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -51,6 +55,12 @@ export default class TripPresenter {
     } else {
       this.#renderPointsList();
     }
+  }
+
+  createPoint = () => {
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#pointNewPresenter.init();
   }
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -100,6 +110,7 @@ export default class TripPresenter {
   }
 
   #handleModeChange = () => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((point) => point.resetView());
   }
 
@@ -120,6 +131,7 @@ export default class TripPresenter {
   #clearPointsList = ({resetSortType = false} = {}) => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
+    this.#pointNewPresenter.destroy();
 
     remove(this.#sortComponent);
 
