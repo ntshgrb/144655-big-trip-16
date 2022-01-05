@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import {OFFERS, DESTINATIONS} from '../const.js';
+import {OFFERS, DESTINATIONS, eventsTypes} from '../const.js';
 import SmartView from './smart-view.js';
 import {generateDescription, generatePhotos} from '../mock/point.js';
 
@@ -60,6 +60,15 @@ const createEventDetails = (offers, information) => {
           </section>`);
 };
 
+const createEventTypeItems = (type) => {
+  const eventsList = eventsTypes
+    .map((eventType) => (`<div class="event__type-item">
+                                <input id="event-type-${eventType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventType}" ${type === eventType ? 'checked' : ''}>
+                                <label class="event__type-label  event__type-label--${eventType}" for="event-type-${eventType}-1">${(eventType)[0].toUpperCase() + (eventType).slice(1)}</label>
+                              </div>`));
+  return eventsList.join('');
+};
+
 const createPointEditTemplate = (data) => {
 
   const {type, destination, offers, information, price, dateFrom, dateTo} = data;
@@ -80,51 +89,7 @@ const createPointEditTemplate = (data) => {
                   <div class="event__type-list">
                     <fieldset class="event__type-group">
                       <legend class="visually-hidden">Event type</legend>
-
-                      <div class="event__type-item">
-                        <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                        <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-                        <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-                        <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-                        <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-                        <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-                        <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-                        <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-                        <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-                      </div>
-
-                      <div class="event__type-item">
-                        <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                        <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-                      </div>
+                      ${createEventTypeItems(type)}
                     </fieldset>
                   </div>
                 </div>
@@ -138,7 +103,6 @@ const createPointEditTemplate = (data) => {
                     ${createAvailableCitiesList()}
                   </datalist>
                 </div>
-
                 <div class="event__field-group  event__field-group--time">
                   <label class="visually-hidden" for="event-start-time-1">From</label>
                   <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${eventStartTime}">
@@ -209,6 +173,16 @@ export default class PointEditView extends SmartView {
     this._callback.submitForm(this._data);
   }
 
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+  }
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
+  }
+
   #setDatepicker = () => {
     this.#datepicker.set('dateFrom', flatpickr(
       this.element.querySelector('#event-start-time-1'),
@@ -236,7 +210,8 @@ export default class PointEditView extends SmartView {
 
   #setInnerHandlers = () => {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('#event-destination-1').addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('#event-price-1').addEventListener('change', this.#priceChangeHandler);
   }
 
   reset = (point) => {
@@ -246,6 +221,7 @@ export default class PointEditView extends SmartView {
   restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setSubmitFormHandler(this._callback.submitForm );
+    this.setDeleteClickHandler(this._callback.deleteClick);
     this.setClickCloseEditHandler(this._callback.closeEditForm);
     this.#setDatepicker();
   }
@@ -264,6 +240,12 @@ export default class PointEditView extends SmartView {
         description: generateDescription(),
         photos: generatePhotos(),
       }
+    });
+  }
+
+  #priceChangeHandler = (evt) => {
+    this.updateData({
+      price: evt.target.value
     });
   }
 

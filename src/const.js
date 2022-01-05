@@ -4,6 +4,8 @@ const SortType = {
   PRICE_DOWN: 'price-down',
 };
 
+const eventsTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
 const time = {
   MIN_PER_HOUR: 60,
   MIN_PER_DAY: 1440,
@@ -101,4 +103,10 @@ const FilterType = {
   PAST: 'past'
 };
 
-export {SortType, time, OFFERS, DESTINATIONS, UpdateType, FilterType};
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+export {SortType, eventsTypes, time, OFFERS, DESTINATIONS, UpdateType, FilterType, UserAction};

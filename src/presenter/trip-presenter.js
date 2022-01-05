@@ -3,7 +3,7 @@ import TripPointsListView from '../view/points-list-view.js';
 import NoPointsView from '../view/no-points-view.js';
 import {remove, render, RenderPosition} from '../utils/render.js';
 import PointPresenter from './point-presenter.js';
-import {SortType, UpdateType, FilterType} from '../const.js';
+import {SortType, UpdateType, FilterType, UserAction} from '../const.js';
 import {sortDateDown, sortDurationDown, sortPriceDown} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
 
@@ -52,6 +52,20 @@ export default class TripPresenter {
       this.#renderPointsList();
     }
   }
+
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#pointsModel.deletePoint(updateType, update);
+        break;
+    }
+  };
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
@@ -118,12 +132,12 @@ export default class TripPresenter {
     }
   }
 
-  #handlePointChange = (updatedPoint) => {
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
-  }
+  //?? #handlePointChange = (updatedPoint) => {
+  //   this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+  // }
 
   #renderPoint = (listContainer, point) => {
-    const pointPresenter = new PointPresenter(listContainer, this.#handlePointChange, this.#handleModeChange);
+    const pointPresenter = new PointPresenter(listContainer, this.#handleViewAction, this.#handleModeChange);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
