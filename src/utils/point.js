@@ -18,4 +18,6 @@ const sortDurationDown = (pointA, pointB) => {
 
 const sortPriceDown = (pointA, pointB) => pointA.price - pointB.price;
 
-export {sortDateDown, sortDurationDown, sortPriceDown, getDelta};
+const isFutureEvent = (dateFrom) => dateFrom >= new Date();
+
+export {sortDateDown, sortDurationDown, sortPriceDown, getDelta, isFutureEvent};

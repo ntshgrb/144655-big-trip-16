@@ -1,14 +1,12 @@
 import {getRandomInteger} from './../utils/common.js';
 import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
-import {OFFERS, DESTINATIONS} from '../const.js';
+import {eventsTypes, OFFERS, DESTINATIONS} from '../const.js';
 
 //Type
 const generatePointType = () => {
-  const types = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-
-  const randomIndex = getRandomInteger(0, types.length - 1);
-  return types[randomIndex];
+  const randomIndex = getRandomInteger(0, eventsTypes.length - 1);
+  return eventsTypes[randomIndex];
 };
 
 //Destination
