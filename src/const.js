@@ -109,4 +109,9 @@ const UserAction = {
   DELETE_POINT: 'DELETE_POINT',
 };
 
-export {SortType, eventsTypes, time, OFFERS, DESTINATIONS, UpdateType, FilterType, UserAction};
+const MenuItem = {
+  POINTS: 'POINTS',
+  STATS: 'STATS'
+};
+
+export {SortType, eventsTypes, time, OFFERS, DESTINATIONS, UpdateType, FilterType, UserAction, MenuItem};

@@ -1,9 +1,11 @@
-import {RenderPosition, render} from './utils/render.js';
+import {RenderPosition, render, remove} from './utils/render.js';
 import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
+import StatsView from './view/stats-view.js';
+import {MenuItem, eventsTypes} from './const.js';
 
 import TripPresenter from './presenter/trip-presenter.js';
 
@@ -25,11 +27,33 @@ const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filte
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-render(tripControlsElement, new SiteMenuView(), RenderPosition.BEFOREEND);
+const siteMenuComponent = new SiteMenuView();
+
+render(tripControlsElement, siteMenuComponent, RenderPosition.BEFOREEND);
 render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
 
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(tripFilterElement, filterModel);
+
+let statisticsComponent = null;
+
+const handleSiteMenuClick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.POINTS:
+      remove(statisticsComponent);
+      filterPresenter.init();
+      tripPresenter.init();
+      break;
+    case MenuItem.STATS:
+      filterPresenter.destroy(); //доделать
+      tripPresenter.destroy();
+      statisticsComponent = new StatsView(pointsModel.points, eventsTypes);
+      render(tripEventsElement, statisticsComponent, RenderPosition.BEFOREEND);
+      break;
+  }
+};
+
+siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
 tripPresenter.init();

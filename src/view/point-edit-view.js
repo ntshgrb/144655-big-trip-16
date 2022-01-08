@@ -172,10 +172,9 @@ export default class PointEditView extends SmartView {
 
   removeElement = () => {
     super.removeElement();
-
-    if (this.#datepicker){
-      this.#datepicker.clear();
-    }
+    this.#datepicker.get('dateFrom').destroy();
+    this.#datepicker.get('dateTo').destroy();
+    this.#datepicker.clear();
   }
 
   setClickCloseEditHandler = (callback) => {
