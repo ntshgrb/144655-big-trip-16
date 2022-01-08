@@ -22,18 +22,18 @@ const filterModel = new FilterModel();
 
 const siteHeaderElement = document.querySelector('.page-header');
 const tripMainElement = siteHeaderElement.querySelector('.trip-main');
-const tripControlsElement = siteHeaderElement.querySelector('.trip-controls__navigation');
-const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
+const tripControlsNavigationElement = siteHeaderElement.querySelector('.trip-controls__navigation');
+const tripControlsElement = siteHeaderElement.querySelector('.trip-main__trip-controls');
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
 const siteMenuComponent = new SiteMenuView();
 
-render(tripControlsElement, siteMenuComponent, RenderPosition.BEFOREEND);
+render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
 render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
 
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
-const filterPresenter = new FilterPresenter(tripFilterElement, filterModel);
+const filterPresenter = new FilterPresenter(tripControlsElement, filterModel);
 
 let statisticsComponent = null;
 
