@@ -16,14 +16,14 @@ const generateDestination = () => {
 };
 
 //Offers
-const generateOffers = () => {
+const generateOffers = (type) => {
   const randomIndex = getRandomInteger(0, 1);
 
   if (!randomIndex) {
     return '';
   }
 
-  const randomOffer = OFFERS[getRandomInteger(0, OFFERS.length - 1)];
+  const randomOffer = OFFERS.find((item) => item.type === type);
 
   return randomOffer;
 };
@@ -74,7 +74,7 @@ const generatePoint = () => {
     id: nanoid(),
     type,
     destination,
-    offers: generateOffers(),
+    offers: generateOffers(type),
     information: {
       description: generateDescription(),
       photos: generatePhotos(),
