@@ -251,7 +251,7 @@ export default class PointEditView extends SmartView {
     this.updateData(point);
   }
 
-  restoreHandlers = () => {
+  restoreHandlers = () => {//зачем?
     this.#setInnerHandlers();
     this.setSubmitFormHandler(this._callback.submitForm );
     this.setDeleteClickHandler(this._callback.deleteClick);
