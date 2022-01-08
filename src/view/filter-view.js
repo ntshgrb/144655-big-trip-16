@@ -16,10 +16,10 @@ const createFilterTemplate = (filterItems, currentFilterType) => {
     .join('');
 
   return `<div class="trip-controls__filters">
-  <h2 class="visually-hidden">Filter events</h2>
-  <form class="trip-filters" action="#" method="get">
-            ${filterItemsTemplate}
-          </form>
+            <h2 class="visually-hidden">Filter events</h2>
+            <form class="trip-filters" action="#" method="get">
+              ${filterItemsTemplate}
+            </form>
           </div>`;
 };
 
