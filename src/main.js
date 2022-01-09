@@ -6,6 +6,7 @@ import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
 import StatsView from './view/stats-view.js';
 import {MenuItem, eventsTypes} from './const.js';
+import NewEventButton from './view/new-event-button-view.js';
 
 import TripPresenter from './presenter/trip-presenter.js';
 
@@ -28,11 +29,13 @@ const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
 const siteMenuComponent = new SiteMenuView();
+const newEventButtonComponent = new NewEventButton();
 
 render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
 render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
+render(tripMainElement, newEventButtonComponent, RenderPosition.BEFOREEND);
 
-const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, newEventButtonComponent);
 const filterPresenter = new FilterPresenter(tripControlsElement, filterModel);
 
 let statisticsComponent = null;
@@ -45,7 +48,7 @@ const handleSiteMenuClick = (menuItem) => {
       tripPresenter.init();
       break;
     case MenuItem.STATS:
-      filterPresenter.destroy(); //доделать
+      filterPresenter.destroy();
       tripPresenter.destroy();
       statisticsComponent = new StatsView(pointsModel.points, eventsTypes);
       render(tripEventsElement, statisticsComponent, RenderPosition.BEFOREEND);
@@ -58,7 +61,8 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 tripPresenter.init();
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+newEventButtonComponent.element.addEventListener('click', (evt) => {
   evt.preventDefault();
   tripPresenter.createPoint();
+  newEventButtonComponent.disableButton();
 });

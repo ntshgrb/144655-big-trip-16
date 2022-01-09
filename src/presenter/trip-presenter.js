@@ -23,12 +23,16 @@ export default class TripPresenter {
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.EVERYTHING;
 
-  constructor(tripContainer, pointsModel, filterModel) {
+  #newEventButtonComponent = null;
+
+  constructor(tripContainer, pointsModel, filterModel, newEventButtonComponent) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointNewPresenter = new PointNewPresenter(this.#tripPointsListComponent, this.#handleViewAction);
+    this.#newEventButtonComponent = newEventButtonComponent;
+
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripPointsListComponent, this.#handleViewAction, this.#newEventButtonComponent);
   }
 
   get points() {

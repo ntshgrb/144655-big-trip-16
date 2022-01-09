@@ -7,10 +7,12 @@ export default class PointNewPresenter {
   #pointListContainer = null;
   #changeData = null;
   #pointEditComponent = null;
+  #newEventButtonComponent = null;
 
-  constructor(pointListContainer, changeData) {
+  constructor(pointListContainer, changeData, newEventButtonComponent) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
+    this.#newEventButtonComponent = newEventButtonComponent;
   }
 
   init = () => {
@@ -35,6 +37,8 @@ export default class PointNewPresenter {
 
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
+
+    this.#newEventButtonComponent.activateButton();
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
