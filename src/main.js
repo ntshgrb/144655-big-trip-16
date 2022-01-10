@@ -7,16 +7,19 @@ import FilterModel from './model/filter-model.js';
 import StatsView from './view/stats-view.js';
 import {MenuItem, eventsTypes} from './const.js';
 import NewEventButton from './view/new-event-button-view.js';
+import ApiService from './api-service.js';
 
 import TripPresenter from './presenter/trip-presenter.js';
 
 import {generatePoint} from './mock/point.js';
 
 const POINT_COUNT = 20;
+const AUTHORIZATION = 'Basic jf983dfaikd';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 
 const points = Array.from({length: POINT_COUNT}, generatePoint);
 
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 pointsModel.points = points;
 
 const filterModel = new FilterModel();
