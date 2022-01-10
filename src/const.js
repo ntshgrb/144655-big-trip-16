@@ -15,10 +15,12 @@ const OFFERS = [
   {
     type: 'flight',
     offer: [{
+      id: 1,
       title: 'Add luggage',
       price: 30,
     },
     {
+      id: 2,
       title: 'Switch to business',
       price: 150,
     }]
@@ -26,6 +28,7 @@ const OFFERS = [
   {
     type: 'taxi',
     offer: [{
+      id: 1,
       title: 'Switch to comfort',
       price: 100,
     }]
@@ -33,6 +36,7 @@ const OFFERS = [
   {
     type: 'ship',
     offer: [{
+      id: 1,
       title: 'Add meal',
       price: 15,
     }]
@@ -40,6 +44,7 @@ const OFFERS = [
   {
     type: 'bus',
     offer: [{
+      id: 1,
       title: 'Choose seats',
       price: 5,
     }]
@@ -47,10 +52,12 @@ const OFFERS = [
   {
     type: 'train',
     offer: [{
+      id: 1,
       title: 'Travel by train',
       price: 4,
     },
     {
+      id: 2,
       title: 'Rent a movie',
       price: 5,
     },]
@@ -58,10 +65,12 @@ const OFFERS = [
   {
     type: 'drive',
     offer: [{
+      id: 1,
       title: 'Music',
       price: 400,
     },
     {
+      id: 2,
       title: 'Window',
       price: 5,
     },]
@@ -69,6 +78,7 @@ const OFFERS = [
   {
     type: 'check-in',
     offer: [{
+      id: 1,
       title: 'Hot water',
       price: 400,
     },]
@@ -76,6 +86,7 @@ const OFFERS = [
   {
     type: 'sightseeing',
     offer: [{
+      id: 1,
       title: 'Boots',
       price: 400,
     },]
@@ -83,6 +94,7 @@ const OFFERS = [
   {
     type: 'restaurant',
     offer: [{
+      id: 1,
       title: 'Food',
       price: 1,
     },]
@@ -109,4 +121,9 @@ const UserAction = {
   DELETE_POINT: 'DELETE_POINT',
 };
 
-export {SortType, eventsTypes, time, OFFERS, DESTINATIONS, UpdateType, FilterType, UserAction};
+const MenuItem = {
+  POINTS: 'POINTS',
+  STATS: 'STATS'
+};
+
+export {SortType, eventsTypes, time, OFFERS, DESTINATIONS, UpdateType, FilterType, UserAction, MenuItem};

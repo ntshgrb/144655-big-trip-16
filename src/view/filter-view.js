@@ -4,9 +4,9 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
   const {type, name} = filter;
   return (
     `<div class="trip-filters__filter">
-      <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}" ${type === currentFilterType ? 'checked' : ''}>
-      <label class="trip-filters__filter-label" for="filter-${type}">${name}</label>
-    </div>`
+        <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}" ${type === currentFilterType ? 'checked' : ''}>
+        <label class="trip-filters__filter-label" for="filter-${type}">${name}</label>
+      </div>`
   );
 };
 
@@ -15,9 +15,12 @@ const createFilterTemplate = (filterItems, currentFilterType) => {
     .map((filter) => createFilterItemTemplate(filter, currentFilterType))
     .join('');
 
-  return `<form class="trip-filters" action="#" method="get">
-            ${filterItemsTemplate}
-          </form>`;
+  return `<div class="trip-controls__filters">
+            <h2 class="visually-hidden">Filter events</h2>
+            <form class="trip-filters" action="#" method="get">
+              ${filterItemsTemplate}
+            </form>
+          </div>`;
 };
 
 export default class FilterView extends AbstractView {

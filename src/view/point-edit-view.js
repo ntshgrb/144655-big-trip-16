@@ -38,15 +38,24 @@ const createAvailableCitiesList = () => {
   return dataList.join('');
 };
 
-const createEventOffers = ({offer}) => {
-  if (!offer) {
+const createEventOffers = (type, pointOffers) => {
+  const currentOffersList = OFFERS.find((item) => item.type === type);
+  if (!currentOffersList) {
     return '';
   }
 
-  const eventOffers = offer.map( ({ title, price }) => (
+  const isSelectedOffer = (id) => {
+    if(!pointOffers) {
+      return;
+    }
+    const selectedOffersId = pointOffers.offer.map((item) => item.id);
+    return selectedOffersId.includes(id);
+  };
+
+  const eventOffers = currentOffersList.offer.map( ({id, title, price}) => (
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage">
-      <label class="event__offer-label" for="event-offer-luggage-1">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${id}" type="checkbox" name="event-offer-luggage${id}" ${isSelectedOffer(id) ? 'checked' : ''}>
+      <label class="event__offer-label" for="event-offer-luggage-${id}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${price}</span>
@@ -75,12 +84,12 @@ const createEventDestination = (information) => {
           </section>`;
 };
 
-const createEventDetails = (offers, information) => {
+const createEventDetails = (type, offers, information) => {
   if (!offers && !information) {
     return '';
   }
   return (`<section class="event__details">
-            ${createEventOffers(offers)}
+            ${createEventOffers(type, offers)}
             ${createEventDestination(information)}
           </section>`);
 };
@@ -88,7 +97,7 @@ const createEventDetails = (offers, information) => {
 const createEventTypeItems = (type) => {
   const eventsList = eventsTypes
     .map((eventType) => (`<div class="event__type-item">
-                                <input id="event-type-${eventType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventType}" ${type === eventType ? 'checked' : ''}>
+                                <input id="event-type-${eventType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventType}" ${type === eventType ? 'checked="true"' : ''}>
                                 <label class="event__type-label  event__type-label--${eventType}" for="event-type-${eventType}-1">${(eventType)[0].toUpperCase() + (eventType).slice(1)}</label>
                               </div>`));
   return eventsList.join('');
@@ -150,7 +159,7 @@ const createPointEditTemplate = (data) => {
                   <span class="visually-hidden">Open event</span>
                 </button>
               </header>
-              ${createEventDetails(offers, information)}
+              ${createEventDetails(type, offers, information)}
             </form>
           </li>`;
 };
@@ -172,10 +181,9 @@ export default class PointEditView extends SmartView {
 
   removeElement = () => {
     super.removeElement();
-
-    if (this.#datepicker){
-      this.#datepicker.clear();
-    }
+    this.#datepicker.get('dateFrom').destroy();
+    this.#datepicker.get('dateTo').destroy();
+    this.#datepicker.clear();
   }
 
   setClickCloseEditHandler = (callback) => {
@@ -237,13 +245,14 @@ export default class PointEditView extends SmartView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeChangeHandler);
     this.element.querySelector('#event-destination-1').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('#event-price-1').addEventListener('change', this.#priceChangeHandler);
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
   }
 
   reset = (point) => {
     this.updateData(point);
   }
 
-  restoreHandlers = () => {
+  restoreHandlers = () => {//зачем?
     this.#setInnerHandlers();
     this.setSubmitFormHandler(this._callback.submitForm );
     this.setDeleteClickHandler(this._callback.deleteClick);
@@ -294,6 +303,23 @@ export default class PointEditView extends SmartView {
     this.updateData({
       price: evt.target.value
     });
+  }
+
+  #offerChangeHandler = (evt) => { //???
+    const targetOffer = OFFERS.find((offer) => offer.type === this._data.type);
+    const targetOfferTitle = evt.target.nextElementSibling.querySelector('.event__offer-title').textContent;
+    const selectedOffer = targetOffer.offer.find((offer) => offer.title === targetOfferTitle);
+
+    if (evt.target.checked) {
+      this._data.offers.offer.push(selectedOffer); // если не существует?
+    } else {
+      const selectedOfferIndex = this._data.offers.offer.findIndex((offer) => offer.title === selectedOffer.title);
+
+      this._data.offers.offer = [
+        this._data.offers.offer.slice(0, selectedOfferIndex),
+        this._data.offers.offer.slice(selectedOfferIndex + 1),
+      ];
+    }
   }
 
   #dateFromChangeHandler = ([userDate]) => {

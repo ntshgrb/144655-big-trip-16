@@ -7,10 +7,12 @@ export default class PointNewPresenter {
   #pointListContainer = null;
   #changeData = null;
   #pointEditComponent = null;
+  #newEventButtonComponent = null;
 
-  constructor(pointListContainer, changeData) {
+  constructor(pointListContainer, changeData, newEventButtonComponent) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
+    this.#newEventButtonComponent = newEventButtonComponent;
   }
 
   init = () => {
@@ -21,6 +23,7 @@ export default class PointNewPresenter {
     this.#pointEditComponent = new PointEditView();
     this.#pointEditComponent.setSubmitFormHandler(this.#handleFormSubmit);
     this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
+    this.#pointEditComponent.setClickCloseEditHandler(this.#handleDeleteClick);
 
     render(this.#pointListContainer, this.#pointEditComponent, RenderPosition.AFTERBEGIN);
 
@@ -34,6 +37,8 @@ export default class PointNewPresenter {
 
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
+
+    this.#newEventButtonComponent.activateButton();
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }

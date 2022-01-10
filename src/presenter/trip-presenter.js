@@ -23,15 +23,16 @@ export default class TripPresenter {
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.EVERYTHING;
 
-  constructor(tripContainer, pointsModel, filterModel) {
+  #newEventButtonComponent = null;
+
+  constructor(tripContainer, pointsModel, filterModel, newEventButtonComponent) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointNewPresenter = new PointNewPresenter(this.#tripPointsListComponent, this.#handleViewAction);
+    this.#newEventButtonComponent = newEventButtonComponent;
 
-    this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripPointsListComponent, this.#handleViewAction, this.#newEventButtonComponent);
   }
 
   get points() {
@@ -55,6 +56,19 @@ export default class TripPresenter {
     } else {
       this.#renderPointsList();
     }
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+  }
+
+  destroy = () => {
+    this.#clearPointsList({resetSortType: true});
+
+    remove(this.#sortComponent);
+    remove(this.#tripPointsListComponent);
+
+    this.#pointsModel.removeObserver(this.#handleModelEvent);
+    this.#filterModel.removeObserver(this.#handleModelEvent);
   }
 
   createPoint = () => {

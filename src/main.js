@@ -1,9 +1,12 @@
-import {RenderPosition, render} from './utils/render.js';
+import {RenderPosition, render, remove} from './utils/render.js';
 import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
+import StatsView from './view/stats-view.js';
+import {MenuItem, eventsTypes} from './const.js';
+import NewEventButton from './view/new-event-button-view.js';
 
 import TripPresenter from './presenter/trip-presenter.js';
 
@@ -20,21 +23,46 @@ const filterModel = new FilterModel();
 
 const siteHeaderElement = document.querySelector('.page-header');
 const tripMainElement = siteHeaderElement.querySelector('.trip-main');
-const tripControlsElement = siteHeaderElement.querySelector('.trip-controls__navigation');
-const tripFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
+const tripControlsNavigationElement = siteHeaderElement.querySelector('.trip-controls__navigation');
+const tripControlsElement = siteHeaderElement.querySelector('.trip-main__trip-controls');
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-render(tripControlsElement, new SiteMenuView(), RenderPosition.BEFOREEND);
-render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
+const siteMenuComponent = new SiteMenuView();
+const newEventButtonComponent = new NewEventButton();
 
-const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
-const filterPresenter = new FilterPresenter(tripFilterElement, filterModel);
+render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
+render(tripMainElement, newEventButtonComponent, RenderPosition.BEFOREEND);
+
+const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, newEventButtonComponent);
+const filterPresenter = new FilterPresenter(tripControlsElement, filterModel);
+
+let statisticsComponent = null;
+
+const handleSiteMenuClick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.POINTS:
+      remove(statisticsComponent);
+      filterPresenter.init();
+      tripPresenter.init();
+      break;
+    case MenuItem.STATS:
+      filterPresenter.destroy();
+      tripPresenter.destroy();
+      statisticsComponent = new StatsView(pointsModel.points, eventsTypes);
+      render(tripEventsElement, statisticsComponent, RenderPosition.BEFOREEND);
+      break;
+  }
+};
+
+siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
 tripPresenter.init();
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+newEventButtonComponent.element.addEventListener('click', (evt) => {
   evt.preventDefault();
   tripPresenter.createPoint();
+  newEventButtonComponent.disableButton();
 });
