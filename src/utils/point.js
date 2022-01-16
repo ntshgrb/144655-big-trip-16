@@ -30,7 +30,7 @@ const sortDurationDown = (pointA, pointB) => {
   return 0;
 };
 
-const sortPriceDown = (pointA, pointB) => pointA.price - pointB.price;
+const sortPriceDown = (pointA, pointB) => pointB.price - pointA.price ;
 
 const isFutureEvent = (dateFrom) => dateFrom >= new Date();
 

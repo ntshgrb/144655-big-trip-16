@@ -2,6 +2,9 @@ import {getRandomInteger} from '../utils/common.js';
 import AbstractView from './abstract-view.js';
 
 const createTripInfoTemplate = (points) => {
+  if (points.length === 0 || points === null) {
+    return '';
+  }
   const destinationCities = [points[1].destination, points[2].destination, points[3].destination];
 
   return `<section class="trip-main__trip-info  trip-info">

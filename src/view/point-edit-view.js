@@ -1,29 +1,18 @@
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import {OFFERS, DESTINATIONS, eventsTypes} from '../const.js';
+import {OFFERS, eventsTypes} from '../const.js';
 import SmartView from './smart-view.js';
-import {generateDescription, generatePhotos} from '../mock/point.js';
+import {generateDescription} from '../mock/point.js';
 
 const BLANK_POINT = {
   type: 'flight',
   destination: 'Bruxelles',
-  offers:
-  {
-    type: 'flight',
-    offer: [{
-      title: 'Add luggage',
-      price: 30,
-    },
-    {
-      title: 'Switch to business',
-      price: 150,
-    }]
-  },
-  information: {
-    description: 'Cras aliquet varius magna, non porta ligula feugiat eget.',
-    photos: ['http://picsum.photos/248/152?r=2'],
-  },
+  offers: [],
+  // information: {
+  //   description: 'Cras aliquet varius magna, non porta ligula feugiat eget.',
+  //   photos: [],
+  // },
   price: 600,
   isFavorite: false,
   dateFrom: '03/12/21 00:00',
@@ -31,7 +20,7 @@ const BLANK_POINT = {
 };
 
 const createAvailableCitiesList = () => {
-  const dataList = DESTINATIONS.map((city) => (
+  const dataList = OFFERS.map((city) => (
     `<option value="${city}"></option>`
   ));
 
@@ -43,12 +32,12 @@ const createEventOffers = (type, pointOffers) => {
   if (!currentOffersList) {
     return '';
   }
-
   const isSelectedOffer = (id) => {
     if(!pointOffers) {
       return;
     }
-    const selectedOffersId = pointOffers.offer.map((item) => item.id);
+
+    const selectedOffersId = pointOffers.map((item) => item.id);
     return selectedOffersId.includes(id);
   };
 
@@ -78,7 +67,7 @@ const createEventDestination = (information) => {
             ${information.description ? `<p class="event__destination-description">${information.description}.</p>` : ''}
             ${information.photos ?  `<div class="event__photos-container">
                                       <div class="event__photos-tape">
-                                        ${information.photos.map((photo) => (`<img class="event__photo" src="${photo}" alt="Event photo">`))}
+                                        ${information.photos.map((photo) => (`<img class="event__photo" src="${photo.src}" alt="${photo.description}">`))}
                                       </div>
                                     </div>` : ''}
           </section>`;
@@ -103,9 +92,11 @@ const createEventTypeItems = (type) => {
   return eventsList.join('');
 };
 
-const createPointEditTemplate = (data) => {
+const createPointEditTemplate = (data, destinations) => {
+  // console.log(offersList);
 
   const {type, destination, offers, information, price, dateFrom, dateTo} = data;
+
 
   const eventStartTime = dayjs(dateFrom).format('DD/MM/YY hh:mm');
   const eventEndTime = dayjs(dateTo).format('DD/MM/YY hh:mm');
@@ -134,7 +125,7 @@ const createPointEditTemplate = (data) => {
                   </label>
                   <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
                   <datalist id="destination-list-1">
-                    ${createAvailableCitiesList()}
+                    ${createAvailableCitiesList(destinations)}
                   </datalist>
                 </div>
                 <div class="event__field-group  event__field-group--time">
@@ -166,17 +157,28 @@ const createPointEditTemplate = (data) => {
 
 export default class PointEditView extends SmartView {
   #datepicker = new Map();
+  #DESTINATIONS = null;
+  #OFFERS = null;
+  #destinationsModel = null;
+  #offersModel = null;
 
-  constructor(point = BLANK_POINT) {
+  constructor(destinationsModel, point = BLANK_POINT, offersModel) {
     super();
     this._data = point;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
+
+    this.#destinationsModel = destinationsModel;
+    this.#DESTINATIONS = this.#destinationsModel.destinations;
+
+    this.#offersModel = offersModel;
+    this.#OFFERS = this.#offersModel.offers;
+    // console.log(this.#OFFERS);
   }
 
   get template() {
-    return createPointEditTemplate(this._data);
+    return createPointEditTemplate(this._data, this.#DESTINATIONS, this.#OFFERS);
   }
 
   removeElement = () => {
@@ -263,7 +265,7 @@ export default class PointEditView extends SmartView {
   #eventTypeChangeHandler = (evt) => {
     this.updateData({
       type: evt.target.value,
-      offers: OFFERS.find((item) => item.type === evt.target.value),
+      // offers: OFFERS.find((item) => item.type === evt.target.value) должны приходить данные с сервера
     });
   }
 
@@ -284,7 +286,7 @@ export default class PointEditView extends SmartView {
         destination: evt.target.value,
         information: {
           description: generateDescription(),
-          photos: generatePhotos(),
+          photos: [],//???
         }
       });
     } else {
@@ -305,19 +307,19 @@ export default class PointEditView extends SmartView {
     });
   }
 
-  #offerChangeHandler = (evt) => { //???
+  #offerChangeHandler = (evt) => {
     const targetOffer = OFFERS.find((offer) => offer.type === this._data.type);
     const targetOfferTitle = evt.target.nextElementSibling.querySelector('.event__offer-title').textContent;
     const selectedOffer = targetOffer.offer.find((offer) => offer.title === targetOfferTitle);
 
     if (evt.target.checked) {
-      this._data.offers.offer.push(selectedOffer); // если не существует?
+      this._data.offers.push(selectedOffer);
     } else {
-      const selectedOfferIndex = this._data.offers.offer.findIndex((offer) => offer.title === selectedOffer.title);
+      const selectedOfferIndex = this._data.offers.findIndex((offer) => offer.title === selectedOffer.title);
 
       this._data.offers.offer = [
-        this._data.offers.offer.slice(0, selectedOfferIndex),
-        this._data.offers.offer.slice(selectedOfferIndex + 1),
+        this._data.offers.slice(0, selectedOfferIndex),
+        this._data.offers.slice(selectedOfferIndex + 1),
       ];
     }
   }

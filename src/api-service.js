@@ -17,12 +17,22 @@ export default class ApiService {
       .then(ApiService.parseResponse);
   }
 
-  updateTask = async (point) => {
+  get destinations() {
+    return this.#load({url: 'destinations'})
+      .then(ApiService.parseResponse);
+  }
+
+  get offers() {
+    return this.#load({url: 'offers'})
+      .then(ApiService.parseResponse);
+  }
+
+  updatePoint = async (point) => {
     const response = await this.#load({
-      url:  `tasks/${point.id}`,//??
+      url:  `points/${point.id}`,
       method: Method.PUT,
-      body: JSON.stringify(point),
-      headers: new Headers({'content-Type': 'application/json'}),
+      body: JSON.stringify(this.#adaptToServer(point)),
+      headers: new Headers({'Content-Type': 'application/json'}),
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
@@ -49,6 +59,28 @@ export default class ApiService {
     } catch (err) {
       ApiService.catchError(err);
     }
+  }
+
+  #adaptToServer = (point) => {
+    const adaptedPoint = {...point,
+      'destination': {
+        'name': point.destination,
+        'description': point.information.description,
+        'pictures': point.information.photos,
+      },
+      'base_price': +point.price,
+      'is_favorite': point.isFavorite,
+      'date_from': point.dateFrom.toISOString(),
+      'date_to': point.dateTo.toISOString(),
+    };
+
+    delete adaptedPoint.price;
+    delete adaptedPoint.isFavorite;
+    delete adaptedPoint.dateFrom;
+    delete adaptedPoint.dateTo;
+    delete adaptedPoint.information;
+
+    return adaptedPoint;
   }
 
   static parseResponse = (response) => response.json();

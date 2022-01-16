@@ -8,19 +8,17 @@ export default class PointNewPresenter {
   #changeData = null;
   #pointEditComponent = null;
   #newEventButtonComponent = null;
+  #destinationsModel = null;
 
-  constructor(pointListContainer, changeData, newEventButtonComponent) {
+  constructor(pointListContainer, changeData, newEventButtonComponent, destinationsModel) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
     this.#newEventButtonComponent = newEventButtonComponent;
+    this.#destinationsModel = destinationsModel;
   }
 
   init = () => {
-    if (this.#pointEditComponent !== null) {
-      return;
-    }
-
-    this.#pointEditComponent = new PointEditView();
+    this.#pointEditComponent = new PointEditView(this.#destinationsModel.destinations);//???
     this.#pointEditComponent.setSubmitFormHandler(this.#handleFormSubmit);
     this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
     this.#pointEditComponent.setClickCloseEditHandler(this.#handleDeleteClick);
