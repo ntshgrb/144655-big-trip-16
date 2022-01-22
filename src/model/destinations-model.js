@@ -17,9 +17,9 @@ export default class DestinationsModel extends AbstractObservable {
   init = async () => {
     try {
       this.#destinations = await this.#apiService.destinations;
-      console.log(this.#destinations);
+      // console.log(this.#destinations);
     } catch(err) {
-      console.log(err);
+      // console.log(err);
     }
 
     this._notify();
