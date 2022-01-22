@@ -169,11 +169,11 @@ export default class PointEditView extends SmartView {
     this.#destinations = destinations;
     this.#offers = offers;
 
-    console.log(this.#offers);
+    // console.log(this.#offers);
   }
 
   get template() {
-    console.trace(this.#offers);
+    // console.trace(this.#offers);
     return createPointEditTemplate(this._data, this.#destinations, this.#offers);
   }
 
