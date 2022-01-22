@@ -93,7 +93,6 @@ const createEventTypeItems = (type) => {
 };
 
 const createPointEditTemplate = (data, destinations) => {
-  // console.log(offersList);
 
   const {type, destination, offers, information, price, dateFrom, dateTo} = data;
 
@@ -157,28 +156,25 @@ const createPointEditTemplate = (data, destinations) => {
 
 export default class PointEditView extends SmartView {
   #datepicker = new Map();
-  #DESTINATIONS = null;
-  #OFFERS = null;
-  #destinationsModel = null;
-  #offersModel = null;
+  #destinations = null;
+  #offers = null;
 
-  constructor(destinationsModel, point = BLANK_POINT, offersModel) {
+  constructor(offers, destinations, point = BLANK_POINT) {
     super();
     this._data = point;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
 
-    this.#destinationsModel = destinationsModel;
-    this.#DESTINATIONS = this.#destinationsModel.destinations;
+    this.#destinations = destinations;
+    this.#offers = offers;
 
-    this.#offersModel = offersModel;
-    this.#OFFERS = this.#offersModel.offers;
-    // console.log(this.#OFFERS);
+    console.log(this.#offers);
   }
 
   get template() {
-    return createPointEditTemplate(this._data, this.#DESTINATIONS, this.#OFFERS);
+    console.trace(this.#offers);
+    return createPointEditTemplate(this._data, this.#destinations, this.#offers);
   }
 
   removeElement = () => {

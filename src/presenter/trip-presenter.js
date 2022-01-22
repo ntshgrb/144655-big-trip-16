@@ -14,8 +14,6 @@ export default class TripPresenter {
   #tripContainer = null;
   #pointsModel = null;
   #filterModel = null;
-  #destinationsModel = null;
-  #offersModel = null;
 
   #sortComponent = null;
   #noPointsComponent = null;
@@ -30,22 +28,17 @@ export default class TripPresenter {
 
   #newEventButtonComponent = null;
 
-  constructor(tripContainer, pointsModel, filterModel, newEventButtonComponent, destinationsModel, offersModel) {
+  constructor(tripContainer, pointsModel, filterModel, newEventButtonComponent) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
     this.#newEventButtonComponent = newEventButtonComponent;
 
-    this.#destinationsModel = destinationsModel;
-    this.#offersModel = offersModel;
-
     this.#pointNewPresenter = new PointNewPresenter(
       this.#tripPointsListComponent,
       this.#handleViewAction,
-      this.#newEventButtonComponent,
-      this.#destinationsModel,
-      this.#offersModel);
+      this.#newEventButtonComponent);
   }
 
   get points() {
@@ -186,10 +179,8 @@ export default class TripPresenter {
     const pointPresenter = new PointPresenter(
       listContainer,
       this.#handleViewAction,
-      this.#handleModeChange,
-      this.#destinationsModel,
-      this.#offersModel);
-    pointPresenter.init(point);
+      this.#handleModeChange);
+    pointPresenter.init(point, this.#pointsModel.offers, this.#pointsModel.odestinations);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 

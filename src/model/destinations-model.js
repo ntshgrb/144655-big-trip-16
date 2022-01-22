@@ -3,7 +3,7 @@ import AbstractObservable from '../utils/abstract-observable.js';
 
 export default class DestinationsModel extends AbstractObservable {
   #apiService = null;
-  #destinations = [];
+  #destinations = ['fdfds', 'fdsfsd'];
 
   constructor(apiService) {
     super();
@@ -17,9 +17,9 @@ export default class DestinationsModel extends AbstractObservable {
   init = async () => {
     try {
       this.#destinations = await this.#apiService.destinations;
-      // console.log(this.#destinations);
+      console.log(this.#destinations);
     } catch(err) {
-      this.#destinations = [];
+      console.log(err);
     }
 
     this._notify();
