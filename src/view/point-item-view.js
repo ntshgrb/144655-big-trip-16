@@ -4,20 +4,21 @@ import {time} from '../const.js';
 import {getDelta} from '../utils/point.js';
 
 const createOffersListTemplate = (offers) => {
-  if (!offers) {
+  if (offers.length === 0) {
     return '';
   }
 
-  const {offer} = offers;
+  const offersItemsTemplate = offers.map((offer) => (
+    `<li class="event__offer">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </li>`)).join('');
 
   return `<h4 class="visually-hidden">Offers:</h4>
-  <ul class="event__selected-offers">
-    <li class="event__offer">
-      <span class="event__offer-title">${offer[0].title}</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offer[0].price}</span>
-    </li>
-  </ul>`;
+          <ul class="event__selected-offers">
+            ${offersItemsTemplate}
+          </ul>`;
 };
 
 const createPointItemTemplate = (point) => {
@@ -52,6 +53,7 @@ const createPointItemTemplate = (point) => {
     : '';
 
   const offersList = createOffersListTemplate(offers);
+
   return  `<li class="trip-events__item">
             <div class="event">
               <time class="event__date" datetime="${dateForattribute}">${dateForUser}</time>

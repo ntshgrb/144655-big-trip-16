@@ -7,18 +7,13 @@ import FilterModel from './model/filter-model.js';
 import StatsView from './view/stats-view.js';
 import {MenuItem, eventsTypes} from './const.js';
 import NewEventButton from './view/new-event-button-view.js';
-
+import ApiService from './api-service.js';
 import TripPresenter from './presenter/trip-presenter.js';
 
-import {generatePoint} from './mock/point.js';
+const AUTHORIZATION = 'Basic jf983dfaikd';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 
-const POINT_COUNT = 20;
-
-const points = Array.from({length: POINT_COUNT}, generatePoint);
-
-const pointsModel = new PointsModel();
-pointsModel.points = points;
-
+const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 const filterModel = new FilterModel();
 
 const siteHeaderElement = document.querySelector('.page-header');
@@ -30,10 +25,6 @@ const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
 const siteMenuComponent = new SiteMenuView();
 const newEventButtonComponent = new NewEventButton();
-
-render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
-render(tripMainElement, new TripInfoView(points), RenderPosition.AFTERBEGIN);
-render(tripMainElement, newEventButtonComponent, RenderPosition.BEFOREEND);
 
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, newEventButtonComponent);
 const filterPresenter = new FilterPresenter(tripControlsElement, filterModel);
@@ -56,8 +47,6 @@ const handleSiteMenuClick = (menuItem) => {
   }
 };
 
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-
 filterPresenter.init();
 tripPresenter.init();
 
@@ -65,4 +54,11 @@ newEventButtonComponent.element.addEventListener('click', (evt) => {
   evt.preventDefault();
   tripPresenter.createPoint();
   newEventButtonComponent.disableButton();
+});
+
+pointsModel.init().finally(() => {
+  render(tripMainElement, new TripInfoView(pointsModel.points), RenderPosition.AFTERBEGIN);
+  render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+  render(tripMainElement, newEventButtonComponent, RenderPosition.BEFOREEND);
 });
