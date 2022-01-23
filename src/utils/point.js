@@ -33,6 +33,7 @@ const sortDurationDown = (pointA, pointB) => {
 const sortPriceDown = (pointA, pointB) => pointB.price - pointA.price ;
 
 const isFutureEvent = (dateFrom) => dateFrom >= new Date();
+const isCurrentEvent = (dateFrom, dateTo) => dateFrom < new Date() && dateTo > new Date();
 
 const createSortedArray = (eventsTypesTitles, eventsTypesTotalCosts) => {
   const arrayOfObj = eventsTypesTitles.map( (d, i) => ({label: d, data: eventsTypesTotalCosts[i]}));
@@ -48,4 +49,4 @@ const countEventsByType = (type, points) => points.filter((point) => point.type 
 const sumTotalTimeByType = (type, points) => points.filter((point) => point.type === type)
   .reduce( (totatTime, point) => totatTime + getDelta(point.dateTo, point.dateFrom), 0);
 
-export {sortDateDown, sortDurationDown, sortPriceDown, getDelta, renderDuration, isFutureEvent, createSortedArray, sumTotalCostByType, countEventsByType, sumTotalTimeByType};
+export {sortDateDown, sortDurationDown, sortPriceDown, getDelta, renderDuration, isFutureEvent, isCurrentEvent, createSortedArray, sumTotalCostByType, countEventsByType, sumTotalTimeByType};
