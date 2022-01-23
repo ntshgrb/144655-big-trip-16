@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import {OFFERS, eventsTypes} from '../const.js';
+import {eventsTypes} from '../const.js';
 import SmartView from './smart-view.js';
 
 const BLANK_POINT = {
@@ -26,24 +26,19 @@ const createAvailableCitiesList = (destinations) => {
   return dataList.join('');
 };
 
-const createEventOffers = (type, pointOffers) => {
-  const currentOffersList = OFFERS.find((item) => item.type === type);
+const createEventOffers = (type, pointOffers, offersList) => {
+  const currentOffersList = offersList.find((offer) => offer.type === type);
+
   if (!currentOffersList) {
     return '';
   }
-  const isSelectedOffer = (id) => {
-    if(!pointOffers) {
-      return;
-    }
 
-    const selectedOffersId = pointOffers.map((item) => item.id);
-    return selectedOffersId.includes(id);
-  };
+  const isSelectedOffer = (id) => pointOffers.some((pointOffer) => pointOffer.id === id);
 
-  const eventOffers = currentOffersList.offer.map( ({id, title, price}) => (
+  const eventOffers = currentOffersList.offers.map( ({id, title, price}) => (
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${id}" type="checkbox" name="event-offer-luggage${id}" ${isSelectedOffer(id) ? 'checked' : ''}>
-      <label class="event__offer-label" for="event-offer-luggage-${id}">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}${id}" type="checkbox" name="event-offer-${type}${id}" ${isSelectedOffer(id) ? 'checked' : ''}>
+      <label class="event__offer-label" for="event-offer-${type}${id}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${price}</span>
@@ -72,12 +67,13 @@ const createEventDestination = (information) => {
           </section>`;
 };
 
-const createEventDetails = (type, offers, information) => {
+const createEventDetails = (type, offers, information, offersList) => {
   if (!offers && !information) {
     return '';
   }
+
   return (`<section class="event__details">
-            ${createEventOffers(type, offers)}
+            ${createEventOffers(type, offers, offersList)}
             ${createEventDestination(information)}
           </section>`);
 };
@@ -91,7 +87,7 @@ const createEventTypeItems = (type) => {
   return eventsList.join('');
 };
 
-const createPointEditTemplate = (data, destinations) => {
+const createPointEditTemplate = (data, destinations, offersList) => {
 
   const {type, destination, offers, information, price, dateFrom, dateTo} = data;
 
@@ -148,7 +144,7 @@ const createPointEditTemplate = (data, destinations) => {
                   <span class="visually-hidden">Open event</span>
                 </button>
               </header>
-              ${createEventDetails(type, offers, information)}
+              ${createEventDetails(type, offers, information, offersList)}
             </form>
           </li>`;
 };
@@ -167,8 +163,6 @@ export default class PointEditView extends SmartView {
   }
 
   get template() {
-    console.log(this._destinations);
-    console.log(this._data);
     return createPointEditTemplate(this._data, this._destinations, this._offers);
   }
 
@@ -256,7 +250,7 @@ export default class PointEditView extends SmartView {
   #eventTypeChangeHandler = (evt) => {
     this.updateData({
       type: evt.target.value,
-      // offers: OFFERS.find((item) => item.type === evt.target.value) должны приходить данные с сервера
+      offers: [],
     });
   }
 
@@ -302,18 +296,18 @@ export default class PointEditView extends SmartView {
   }
 
   #offerChangeHandler = (evt) => {
-    const targetOffer = OFFERS.find((offer) => offer.type === this._data.type);
+    const currentOffersList = this._offers.find((offer) => offer.type === this._data.type);
     const targetOfferTitle = evt.target.nextElementSibling.querySelector('.event__offer-title').textContent;
-    const selectedOffer = targetOffer.offer.find((offer) => offer.title === targetOfferTitle);
+    const selectedOffer = currentOffersList.offers.find((offer) => offer.title === targetOfferTitle);
 
     if (evt.target.checked) {
       this._data.offers.push(selectedOffer);
     } else {
       const selectedOfferIndex = this._data.offers.findIndex((offer) => offer.title === selectedOffer.title);
 
-      this._data.offers.offer = [
-        this._data.offers.slice(0, selectedOfferIndex),
-        this._data.offers.slice(selectedOfferIndex + 1),
+      this._data.offers = [
+        ...this._data.offers.slice(0, selectedOfferIndex),
+        ...this._data.offers.slice(selectedOfferIndex + 1),
       ];
     }
   }
