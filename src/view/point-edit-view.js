@@ -173,14 +173,21 @@ export default class PointEditView extends SmartView {
     this.#datepicker.clear();
   }
 
+  reset = (point) => {
+    this.updateData(point);
+  }
+
+  restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setSubmitFormHandler(this._callback.submitForm );
+    this.setDeleteClickHandler(this._callback.deleteClick);
+    this.setClickCloseEditHandler(this._callback.closeEditForm);
+    this.#setDatepicker();
+  }
+
   setClickCloseEditHandler = (callback) => {
     this._callback.closeEditForm = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickCloseEditHandler);
-  }
-
-  #clickCloseEditHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.closeEditForm();
   }
 
   setSubmitFormHandler = (callback) => {
@@ -188,19 +195,14 @@ export default class PointEditView extends SmartView {
     this.element.querySelector('form').addEventListener('submit', this.#submitFormHandler);
   }
 
-  #submitFormHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.submitForm(this._data);
-  }
-
   setDeleteClickHandler = (callback) => {
     this._callback.deleteClick = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
   }
 
-  #formDeleteClickHandler = (evt) => {
+  #submitFormHandler = (evt) => {
     evt.preventDefault();
-    this._callback.deleteClick(this._data);
+    this._callback.submitForm(this._data);
   }
 
   #setDatepicker = () => {
@@ -235,16 +237,14 @@ export default class PointEditView extends SmartView {
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
   }
 
-  reset = (point) => {
-    this.updateData(point);
+  #clickCloseEditHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.closeEditForm();
   }
 
-  restoreHandlers = () => {
-    this.#setInnerHandlers();
-    this.setSubmitFormHandler(this._callback.submitForm );
-    this.setDeleteClickHandler(this._callback.deleteClick);
-    this.setClickCloseEditHandler(this._callback.closeEditForm);
-    this.#setDatepicker();
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
   }
 
   #eventTypeChangeHandler = (evt) => {
