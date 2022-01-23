@@ -19,16 +19,10 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  // #offersList = null;
-  // #destinationsList = null;
-
   constructor(pointListContainer, changeData, changeMode) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
-
-    // this.#offersList = offers;
-    // this.#destinationsList = destinations;
   }
 
   init = (point, offers, destinations) => {
