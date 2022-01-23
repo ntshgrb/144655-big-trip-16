@@ -223,6 +223,7 @@ export default class PointEditView extends SmartView {
         enableTime: true,
         // eslint-disable-next-line camelcase
         time_24hr: true,
+        minDate: this._data.dateFrom,
         dateFormat: 'd/m/y H:i',
         defaultDate: this._data.dateTo,
         onChange: this.#dateToChangeHandler,
