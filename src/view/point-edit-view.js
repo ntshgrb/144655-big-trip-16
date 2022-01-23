@@ -3,7 +3,6 @@ import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import {OFFERS, eventsTypes} from '../const.js';
 import SmartView from './smart-view.js';
-import {generateDescription} from '../mock/point.js';
 
 const BLANK_POINT = {
   type: 'flight',
@@ -19,9 +18,9 @@ const BLANK_POINT = {
   dateTo: '03/12/21 00:00',
 };
 
-const createAvailableCitiesList = () => {
-  const dataList = OFFERS.map((city) => (
-    `<option value="${city}"></option>`
+const createAvailableCitiesList = (destinations) => {
+  const dataList = destinations.map((city) => (
+    `<option value="${city.name}"></option>`
   ));
 
   return dataList.join('');
@@ -156,25 +155,21 @@ const createPointEditTemplate = (data, destinations) => {
 
 export default class PointEditView extends SmartView {
   #datepicker = new Map();
-  #destinations = null;
-  #offers = null;
 
   constructor(offers, destinations, point = BLANK_POINT) {
     super();
     this._data = point;
+    this._offers = offers;
+    this._destinations = destinations;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
-
-    this.#destinations = destinations;
-    this.#offers = offers;
-
-    // console.log(this.#offers);
   }
 
   get template() {
-    // console.trace(this.#offers);
-    return createPointEditTemplate(this._data, this.#destinations, this.#offers);
+    console.log(this._destinations);
+    console.log(this._data);
+    return createPointEditTemplate(this._data, this._destinations, this._offers);
   }
 
   removeElement = () => {
@@ -250,7 +245,7 @@ export default class PointEditView extends SmartView {
     this.updateData(point);
   }
 
-  restoreHandlers = () => {//зачем?
+  restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setSubmitFormHandler(this._callback.submitForm );
     this.setDeleteClickHandler(this._callback.deleteClick);
@@ -277,12 +272,15 @@ export default class PointEditView extends SmartView {
       }
     }
 
+    const getNewDestination = () => this._destinations.find((item) => item.name === destinationInputElement.value);
+    const newDestination = getNewDestination();
+
     if (optionFound) {
       this.updateData({
         destination: evt.target.value,
         information: {
-          description: generateDescription(),
-          photos: [],//???
+          description: newDestination.description,
+          photos: newDestination.pictures,
         }
       });
     } else {

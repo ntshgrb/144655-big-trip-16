@@ -17,7 +17,7 @@ export default class PointPresenter {
   #pointEditComponent = null;
 
   #point = null;
-  #mode = Mode.DEFAULT
+  #mode = Mode.DEFAULT;
 
   // #offersList = null;
   // #destinationsList = null;

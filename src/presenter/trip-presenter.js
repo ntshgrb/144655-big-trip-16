@@ -180,7 +180,7 @@ export default class TripPresenter {
       listContainer,
       this.#handleViewAction,
       this.#handleModeChange);
-    pointPresenter.init(point, this.#pointsModel.offers, this.#pointsModel.odestinations);
+    pointPresenter.init(point, this.#pointsModel.offers, this.#pointsModel.destinations);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
