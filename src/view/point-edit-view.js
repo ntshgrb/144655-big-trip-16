@@ -6,16 +6,12 @@ import SmartView from './smart-view.js';
 
 const BLANK_POINT = {
   type: 'flight',
-  destination: 'Bruxelles',
+  destination: '',
   offers: [],
-  // information: {
-  //   description: 'Cras aliquet varius magna, non porta ligula feugiat eget.',
-  //   photos: [],
-  // },
-  price: 600,
+  price: 0,
   isFavorite: false,
-  dateFrom: '03/12/21 00:00',
-  dateTo: '03/12/21 00:00',
+  dateFrom: dayjs(),
+  dateTo: dayjs().add(2, 'day'),
 };
 
 const createAvailableCitiesList = (destinations) => {
