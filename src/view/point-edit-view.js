@@ -287,6 +287,12 @@ export default class PointEditView extends SmartView {
       return;
     }
 
+    if (evt.target.value < 0) {
+      evt.target.setCustomValidity('Value must be a positive integer');
+      evt.target.reportValidity();
+      return;
+    }
+
     this.updateData({
       price: evt.target.value
     });
