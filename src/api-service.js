@@ -73,7 +73,7 @@ export default class ApiService {
     headers.append('Authorization', this.#authorization);
 
     const response = await fetch(
-      `${this.#endPoint}/${url}`,//странный код
+      `${this.#endPoint}/${url}`,
       {method, body, headers},
     );
 
@@ -81,7 +81,7 @@ export default class ApiService {
       ApiService.checkStatus(response);
       return response;
     } catch (err) {
-      ApiService.catchError(err);//до сюда странный
+      ApiService.catchError(err);
     }
   }
 
