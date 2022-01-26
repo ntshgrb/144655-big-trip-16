@@ -9,6 +9,8 @@ const BLANK_POINT = {
   destination: '',
   offers: [],
   isFavorite: false,
+  dateFrom: '',
+  dateTo: '',
 };
 
 const createAvailableCitiesList = (destinations) => {

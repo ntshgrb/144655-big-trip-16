@@ -1,5 +1,4 @@
 import {RenderPosition, render, remove} from './utils/render.js';
-import TripInfoView from './view/trip-info-view.js';
 import SiteMenuView from './view/site-menu-view.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
@@ -26,7 +25,7 @@ const tripEventsElement = siteMainElement.querySelector('.trip-events');
 const siteMenuComponent = new SiteMenuView();
 const newEventButtonComponent = new NewEventButton();
 
-const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, newEventButtonComponent);
+const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, newEventButtonComponent, tripMainElement);
 const filterPresenter = new FilterPresenter(tripControlsElement, filterModel);
 
 let statisticsComponent = null;
@@ -57,8 +56,6 @@ newEventButtonComponent.element.addEventListener('click', (evt) => {
 });
 
 pointsModel.init().finally(() => {
-  render(tripMainElement, new TripInfoView(pointsModel.points), RenderPosition.AFTERBEGIN);
   render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-  render(tripMainElement, newEventButtonComponent, RenderPosition.BEFOREEND);
 });

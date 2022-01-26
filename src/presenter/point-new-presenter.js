@@ -7,13 +7,11 @@ export default class PointNewPresenter {
   #changeData = null;
   #pointEditComponent = null;
   #newEventButtonComponent = null;
-  #destinationsModel = null;
 
-  constructor(pointListContainer, changeData, newEventButtonComponent, destinationsModel) {
+  constructor(pointListContainer, changeData, newEventButtonComponent) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
     this.#newEventButtonComponent = newEventButtonComponent;
-    this.#destinationsModel = destinationsModel;
   }
 
   init = (offers, destinations) => {
