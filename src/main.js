@@ -26,7 +26,7 @@ const siteMenuComponent = new SiteMenuView();
 const newEventButtonComponent = new NewEventButton();
 
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel, newEventButtonComponent, tripMainElement);
-const filterPresenter = new FilterPresenter(tripControlsElement, filterModel);
+const filterPresenter = new FilterPresenter(tripControlsElement, filterModel, pointsModel);
 
 let statisticsComponent = null;
 
@@ -46,7 +46,6 @@ const handleSiteMenuClick = (menuItem) => {
   }
 };
 
-filterPresenter.init();
 tripPresenter.init();
 
 newEventButtonComponent.element.addEventListener('click', (evt) => {
@@ -56,6 +55,7 @@ newEventButtonComponent.element.addEventListener('click', (evt) => {
 });
 
 pointsModel.init().finally(() => {
+  filterPresenter.init();
   render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
   siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 });
