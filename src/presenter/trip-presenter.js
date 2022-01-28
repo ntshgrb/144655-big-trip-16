@@ -2,7 +2,7 @@ import TripSortView from '../view/trip-sort-view.js';
 import TripInfoView from '../view/trip-info-view.js';
 import TripPointsListView from '../view/points-list-view.js';
 import NoPointsView from '../view/no-points-view.js';
-import {remove, render, RenderPosition} from '../utils/render.js';
+import {remove, render, RenderPosition, replace} from '../utils/render.js';
 import PointPresenter, {State as PointPresenterViewState} from './point-presenter.js';
 import PointNewPresenter from './point-new-presenter.js';
 import {SortType, UpdateType, FilterType, UserAction} from '../const.js';
@@ -106,11 +106,16 @@ export default class TripPresenter {
   }
 
   #renderTripInfo = () => {
-    if (!this.#tripInfoComponent) {
+    const prevTripInfoComponent = this.#tripInfoComponent;
+    this.#tripInfoComponent = new TripInfoView(this.#pointsModel.points);
+
+    if (prevTripInfoComponent === null) {
+      render(this.#tripMainElement, this.#tripInfoComponent, RenderPosition.AFTERBEGIN);
       return;
     }
-    this.#tripInfoComponent = new TripInfoView(this.points);
-    render(this.#tripMainElement, this.#tripInfoComponent, RenderPosition.AFTERBEGIN);
+
+    replace(this.#tripInfoComponent, prevTripInfoComponent);
+    remove(prevTripInfoComponent);
   }
 
   #renderPointsList = () => {

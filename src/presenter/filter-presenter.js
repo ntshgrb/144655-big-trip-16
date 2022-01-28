@@ -1,30 +1,38 @@
 import FilterView from '../view/filter-view.js';
 import {UpdateType, FilterType} from '../const.js';
 import {remove, render, RenderPosition, replace} from '../utils/render.js';
+import {filter} from '../utils/filter.js';
 
 export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
   #filterComponent = null;
+  #pointsModel = null;
 
-  constructor(filterContainer, filterModel) {
+  constructor(filterContainer, filterModel, pointsModel) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
+    this.#pointsModel = pointsModel;
   }
 
   get filters() {
+    const points = this.#pointsModel.points;
+
     return [
       {
         type: FilterType.EVERYTHING,
-        name: 'Everything'
+        name: 'Everything',
+        count: filter[FilterType.EVERYTHING](points).length,
       },
       {
         type: FilterType.FUTURE,
-        name: 'Future'
+        name: 'Future',
+        count: filter[FilterType.FUTURE](points).length,
       },
       {
         type: FilterType.PAST,
-        name: 'Past'
+        name: 'Past',
+        count: filter[FilterType.PAST](points).length,
       },
     ];
   }
