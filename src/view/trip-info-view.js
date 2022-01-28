@@ -1,21 +1,44 @@
-import {getRandomInteger} from '../utils/common.js';
+import {sortDateDown} from '../utils/point.js';
 import AbstractView from './abstract-view.js';
+import {citiesCount} from '../const.js';
+import dayjs from 'dayjs';
+
+const createCitiesList = (points) => {
+  const pointsCount = points.length;
+
+  switch (pointsCount) {
+    case citiesCount.ONE_CITY:
+      return `${points[0].destination}`;
+    case citiesCount.TWO_CITIES:
+      return `${points[0].destination}&mdash;${points[1].destination}`;
+    case citiesCount.THREE_CITIES:
+      return `${points[0].destination}&mdash;${points[1].destination}&mdash;${points[2].destination}`;
+    default:
+      return `${points[0].destination}&mdash;...&mdash;${points[points.length - 1].destination}`;
+  }
+};
 
 const createTripInfoTemplate = (points) => {
   if (points.length === 0 || points === null) {
     return '';
   }
-  const destinationCities = [points[1].destination, points[2].destination, points[3].destination];
+
+  const arrangedPoints = points.sort(sortDateDown);
+
+  const totalPrice = arrangedPoints
+    .reduce( (previousValue, item) =>  previousValue + item.price + item.offers
+      .reduce( (sum, offer) => sum + offer.price, 0), 0);
+
+  const tripStartDate = dayjs(arrangedPoints[0].dateFrom).format('MMM DD');
+  const tripEndDate = dayjs(arrangedPoints[arrangedPoints.length - 1].dateTo).format('DD MMM');
 
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
-    <h1 class="trip-info__title">${destinationCities[0]} &mdash; ${destinationCities[1]} &mdash; ${destinationCities[2]}</h1>
-
-    <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
+    <h1 class="trip-info__title">${createCitiesList(points)}</h1>
+    <p class="trip-info__dates">${tripStartDate}&nbsp;&mdash;&nbsp;${tripEndDate}</p>
   </div>
-
   <p class="trip-info__cost">
-    Total: &euro;&nbsp;<span class="trip-info__cost-value">${getRandomInteger(100, 3000)}</span>
+    Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
   </p>
 </section>`;
 };
