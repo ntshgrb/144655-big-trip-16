@@ -124,6 +124,8 @@ export default class TripPresenter {
       return;
     }
 
+    this.#renderTripInfo();
+
     const points = this.points;
 
     this.#renderNewEventButtonComponent();
@@ -138,7 +140,6 @@ export default class TripPresenter {
     }
 
     this.#renderSort();
-    this.#renderTripInfo();
 
     render(this.#tripContainer, this.#tripPointsListComponent, RenderPosition.BEFOREEND);
     this.#renderPoints(this.#tripPointsListComponent, points);
