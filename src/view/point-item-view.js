@@ -1,6 +1,6 @@
 import AbstractView from './abstract-view.js';
 import dayjs from 'dayjs';
-import {time} from '../const.js';
+import {Time} from '../const.js';
 import {getDelta} from '../utils/point.js';
 
 const createOffersListTemplate = (offers) => {
@@ -40,9 +40,9 @@ const createPointItemTemplate = (point) => {
     const hours = Math.floor(duration / 60 % 24);
     const days =  Math.floor(duration / 60 / 24);
 
-    if (duration < time.MIN_PER_HOUR) {
+    if (duration < Time.MIN_PER_HOUR) {
       return minutes < 10 ? `0${minutes}M` : `${minutes}M`;
-    } if (duration < time.MIN_PER_DAY) {
+    } if (duration < Time.MIN_PER_DAY) {
       return `${hours}H ${minutes}M`;
     }
     return `${days}D ${hours}H ${minutes}M`;

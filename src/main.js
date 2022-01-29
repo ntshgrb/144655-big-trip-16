@@ -4,7 +4,7 @@ import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
 import StatsView from './view/stats-view.js';
-import {MenuItem, eventsTypes} from './const.js';
+import {MenuItem, EVENTS_TYPES} from './const.js';
 import NewEventButton from './view/new-event-button-view.js';
 import ApiService from './api-service.js';
 import TripPresenter from './presenter/trip-presenter.js';
@@ -40,7 +40,7 @@ const handleSiteMenuClick = (menuItem) => {
     case MenuItem.STATS:
       filterPresenter.destroy();
       tripPresenter.destroy();
-      statisticsComponent = new StatsView(pointsModel.points, eventsTypes);
+      statisticsComponent = new StatsView(pointsModel.points, EVENTS_TYPES);
       render(tripEventsElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
   }

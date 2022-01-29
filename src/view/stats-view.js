@@ -1,5 +1,5 @@
 import SmartView from './smart-view';
-import {createSortedArray, sumTotalCostByType, countEventsByType, sumTotalTimeByType, renderDuration} from '../utils/point.js';
+import {sortData, sumTotalCostByType, countEventsByType, sumTotalTimeByType, renderDuration} from '../utils/point.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -29,21 +29,21 @@ const createNewChart = (currentChartType, ctx, labels, data) => {
       break;
   }
 
-  const sortedArrayOfObj = createSortedArray(labels, data);
-  const sortedLabelsArray = [];
-  const sortedDataArray = [];
-  sortedArrayOfObj.forEach((d) => {
-    sortedLabelsArray.push(d.label);
-    sortedDataArray.push(d.data);
+  const sortedData = sortData(labels, data);
+  const sortedLabelsList = [];
+  const sortedDataList = [];
+  sortedData.forEach((d) => {
+    sortedLabelsList.push(d.label);
+    sortedDataList.push(d.data);
   });
 
   return new Chart(ctx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: sortedLabelsArray,
+      labels: sortedLabelsList,
       datasets: [{
-        data: sortedDataArray,
+        data: sortedDataList,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
