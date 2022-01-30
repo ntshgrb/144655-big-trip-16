@@ -172,8 +172,8 @@ export default class TripPresenter {
   };
 
   #renderPoints = (listContainer, points) => {
-    for (let i = 0; i < points.length; i++) {
-      this.#renderPoint(listContainer, points[i]);
+    for (const point of points) {
+      this.#renderPoint(listContainer, point);
     }
   }
 

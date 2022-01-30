@@ -258,8 +258,8 @@ export default class PointEditView extends SmartView {
     const destinationsListElement = this.element.querySelector('#destination-list-1');
     let optionFound = false;
 
-    for (let i = 0; i < destinationsListElement.options.length; i++) {
-      if (destinationInputElement.value === destinationsListElement.options[i].value) {
+    for (const option of destinationsListElement.options) {
+      if (destinationInputElement.value === option.value) {
         optionFound = true;
         break;
       }
