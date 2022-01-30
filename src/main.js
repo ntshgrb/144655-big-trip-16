@@ -34,12 +34,14 @@ const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.POINTS:
       remove(statisticsComponent);
+      newEventButtonComponent.activateButton();
       filterPresenter.init();
       tripPresenter.init();
       break;
     case MenuItem.STATS:
       filterPresenter.destroy();
       tripPresenter.destroy();
+      newEventButtonComponent.disableButton();
       statisticsComponent = new StatsView(pointsModel.points, EVENTS_TYPES);
       render(tripEventsElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
