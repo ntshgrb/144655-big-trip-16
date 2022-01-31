@@ -1,17 +1,17 @@
 import {sortDateDown} from '../utils/point.js';
 import AbstractView from './abstract-view.js';
-import {СitiesCount} from '../const.js';
+import {CitiesCount} from '../const.js';
 import dayjs from 'dayjs';
 
 const createCitiesList = (points) => {
   const pointsCount = points.length;
 
   switch (pointsCount) {
-    case СitiesCount.ONE_CITY:
+    case CitiesCount.ONE_CITY:
       return `${points[0].destination}`;
-    case СitiesCount.TWO_CITIES:
+    case CitiesCount.TWO_CITIES:
       return `${points[0].destination}&mdash;${points[1].destination}`;
-    case СitiesCount.THREE_CITIES:
+    case CitiesCount.THREE_CITIES:
       return `${points[0].destination}&mdash;${points[1].destination}&mdash;${points[2].destination}`;
     default:
       return `${points[0].destination}&mdash;...&mdash;${points[points.length - 1].destination}`;

@@ -37,10 +37,10 @@ const MenuItem = {
   STATS: 'STATS',
 };
 
-const СitiesCount = {
+const CitiesCount = {
   ONE_CITY: 1,
   TWO_CITIES: 2,
   THREE_CITIES: 3,
 };
 
-export {SortType, EVENTS_TYPES, Time, UpdateType, FilterType, UserAction, MenuItem, СitiesCount};
+export {SortType, EVENTS_TYPES, Time, UpdateType, FilterType, UserAction, MenuItem, CitiesCount};
