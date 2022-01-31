@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import {eventsTypes} from '../const.js';
+import {EVENTS_TYPES} from '../const.js';
 import SmartView from './smart-view.js';
 
 const BLANK_POINT = {
@@ -74,7 +74,7 @@ const createEventDetails = (type, offers, information, offersList, isDisabled) =
 };
 
 const createEventTypeItems = (type, isDisabled) => {
-  const eventsList = eventsTypes
+  const eventsList = EVENTS_TYPES
     .map((eventType) => (`<div class="event__type-item">
                                 <input id="event-type-${eventType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventType}" ${type === eventType ? 'checked="true"' : ''} ${isDisabled ? 'disabled' : ''}>
                                 <label class="event__type-label  event__type-label--${eventType}" for="event-type-${eventType}-1">${(eventType)[0].toUpperCase() + (eventType).slice(1)}</label>
@@ -258,8 +258,8 @@ export default class PointEditView extends SmartView {
     const destinationsListElement = this.element.querySelector('#destination-list-1');
     let optionFound = false;
 
-    for (let i = 0; i < destinationsListElement.options.length; i++) {
-      if (destinationInputElement.value === destinationsListElement.options[i].value) {
+    for (const option of destinationsListElement.options) {
+      if (destinationInputElement.value === option.value) {
         optionFound = true;
         break;
       }

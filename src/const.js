@@ -6,9 +6,9 @@ const SortType = {
   OFFERS: 'offers',
 };
 
-const eventsTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const EVENTS_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-const time = {
+const Time = {
   MIN_PER_HOUR: 60,
   MIN_PER_DAY: 1440,
 };
@@ -37,10 +37,10 @@ const MenuItem = {
   STATS: 'STATS'
 };
 
-const citiesCount = {
+const СitiesCount = {
   ONE_CITY: 1,
   TWO_CITIES: 2,
   THREE_CITIES: 3,
 };
 
-export {SortType, eventsTypes, time, UpdateType, FilterType, UserAction, MenuItem, citiesCount};
+export {SortType, EVENTS_TYPES, Time, UpdateType, FilterType, UserAction, MenuItem, СitiesCount};
