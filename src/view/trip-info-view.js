@@ -19,7 +19,7 @@ const createCitiesList = (points) => {
 };
 
 const createTripInfoTemplate = (points) => {
-  if (points.length === 0 || points === null) {
+  if (points.length === 0) {
     return '';
   }
 
