@@ -19,9 +19,6 @@ const createCitiesList = (points) => {
 };
 
 const createTripInfoTemplate = (points) => {
-  if (points.length === 0) {
-    return '';
-  }
 
   const arrangedPoints = points.sort(sortDateDown);
 

@@ -106,6 +106,10 @@ export default class TripPresenter {
   }
 
   #renderTripInfo = () => {
+    if (this.#pointsModel.points.length === 0) {
+      return;
+    }
+
     const prevTripInfoComponent = this.#tripInfoComponent;
     this.#tripInfoComponent = new TripInfoView(this.#pointsModel.points);
 

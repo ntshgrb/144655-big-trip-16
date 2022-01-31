@@ -36,16 +36,19 @@ const createPointItemTemplate = (point) => {
   const pointDuration = getDelta(dateTo, dateFrom);
 
   const renderDuration = (duration) => {
+    const formatValue = (value) => value < 10 ? `0${value}` : value;
+
     const minutes = Math.floor(duration % 60);
     const hours = Math.floor(duration / 60 % 24);
     const days =  Math.floor(duration / 60 / 24);
 
     if (duration < Time.MIN_PER_HOUR) {
-      return minutes < 10 ? `0${minutes}M` : `${minutes}M`;
+      return `${formatValue(minutes)}M`;
+
     } if (duration < Time.MIN_PER_DAY) {
-      return `${hours}H ${minutes}M`;
+      return `${formatValue(hours)}H ${formatValue(minutes)}M`;
     }
-    return `${days}D ${hours}H ${minutes}M`;
+    return `${formatValue(days)}D ${formatValue(hours)}H ${formatValue(minutes)}M`;
   };
 
   const favoriteClassName = isFavorite
