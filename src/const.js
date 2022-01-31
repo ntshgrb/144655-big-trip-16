@@ -23,7 +23,7 @@ const UpdateType = {
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
-  PAST: 'past'
+  PAST: 'past',
 };
 
 const UserAction = {
@@ -34,7 +34,7 @@ const UserAction = {
 
 const MenuItem = {
   POINTS: 'POINTS',
-  STATS: 'STATS'
+  STATS: 'STATS',
 };
 
 const СitiesCount = {
